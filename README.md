@@ -744,9 +744,9 @@ maintenant, nous dirigeons le domaine `tpiliesharrache.grasset` vers l'IP WAN pf
 
 
 
-## Conclusion
+## Finalement
 
-Cette mission a démontré avec succès la création d'un environnement réseau sécurisé et virtualisé à l'aide de VirtualBox et de pfSense. En configurant méticuleusement les paramètres réseau, en établissant des règles de pare-feu, en sécurisant les interfaces administratives avec des certificats SSL/TLS et en déployant un serveur Web, un réseau local fonctionnel et sécurisé a été établi. Le site Web hébergé est accessible à partir de la machine physique, ce qui démontre des compétences efficaces en matière de virtualisation et de gestion de réseau.
+avec succès on a création un environnement réseau sécurisé et virtualisé à l'aide de VirtualBox et de pfSense. En configurant méticuleusement les paramètres réseau, en établissant des règles de pare-feu, en sécurisant les interfaces administratives avec des certificats SSL/TLS et en déployant un serveur Web, un réseau local fonctionnel et sécurisé a été établi. Le site Web hébergé est accessible à partir de la machine physique.
 
 ### Flux d'information, Architecture client-serveur et API
 
@@ -782,6 +782,12 @@ Le flux de trafic réseau est le suivant :
 7. **Traitement final par le navigateur** :
    - Le JavaScript dans le navigateur reçoit les données JSON.
    - Il traite ces données et met à jour le DOM pour afficher les informations des films.
+
+
+### schéma réseau
+
+![102](https://github.com/user-attachments/assets/bcbee948-4f26-4444-87d4-fbc2bb2c2693)
+
 
 ### Protocoles utilisés 
 
