@@ -300,7 +300,7 @@ Il faut fournire des adresses IP fixes pour les machines virtuelles, garantissan
      - ![26](https://github.com/user-attachments/assets/cb5e102a-496d-49fd-b36f-cf981e6a86ff)
 
    - **pour Ubuntu Server:**
-     - **MAC Address:** (Récupérer à partir de Ubuntu VM à l'aide de `ip addr`)
+     - **MAC Address:** (Récupérer à partir de Ubuntu VM à l'aide de `ipconfig`)
        
      - ![25](https://github.com/user-attachments/assets/5b03a2be-93ee-428d-8c29-2e325464c4c0)
 
