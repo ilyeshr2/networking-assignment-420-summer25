@@ -722,6 +722,44 @@ maintenant, nous dirigeons le domaine `tpiliesharrache.grasset` vers l'IP WAN pf
 
 Cette mission a démontré avec succès la création d'un environnement réseau sécurisé et virtualisé à l'aide de VirtualBox et de pfSense. En configurant méticuleusement les paramètres réseau, en établissant des règles de pare-feu, en sécurisant les interfaces administratives avec des certificats SSL/TLS et en déployant un serveur Web, un réseau local fonctionnel et sécurisé a été établi. Le site Web hébergé est accessible à partir de la machine physique, ce qui démontre des compétences efficaces en matière de virtualisation et de gestion de réseau.
 
+### Flux d'information détaillé
+
+1. **Requête initiale du client** :
+   - L'utilisateur entre l'URL http://tpiliesharrache.grasset dans son navigateur sur la machine physique.
+   - Le navigateur résout le nom de domaine en utilisant le fichier hosts modifié, qui pointe vers l'adresse IP WAN de pfSense (192.168.20.107).
+
+2. **Traitement par pfSense** :
+   - La requête HTTP arrive sur l'interface WAN de pfSense.
+   - pfSense examine la requête et applique la règle NAT correspondante.
+   - La requête est redirigée vers l'adresse IP interne du serveur Ubuntu (10.10.10.11) sur le port 80.
+
+3. **Traitement par le serveur Ubuntu** :
+   - Apache reçoit la requête HTTP sur le port 80.
+   - Le VirtualHost correspondant à "tpiliesharrache.grasset" est sélectionné.
+   - Apache sert les fichiers statiques (HTML, CSS, JS) depuis le répertoire /var/www/tpiliesharrache/public_html.
+
+4. **Exécution du code JavaScript** :
+   - Le navigateur reçoit et exécute le code JavaScript.
+   - Le JavaScript initie une requête XMLHttpRequest vers https://ghibliapi.vercel.app/films.
+
+5. **Nouvelle requête vers l'API externe** :
+   - Cette requête passe à nouveau par pfSense, mais cette fois en tant que trafic sortant.
+   - pfSense applique la translation d'adresse source (SNAT) pour permettre la communication avec Internet.
+
+6. **Réponse de l'API Ghibli** :
+   - L'API Ghibli répond avec les données JSON des films.
+   - La réponse traverse Internet et arrive à pfSense.
+
+7. **Retour de la réponse au client** :
+   - pfSense applique la translation d'adresse de destination inverse (DNAT) et renvoie la réponse au serveur Ubuntu.
+   - Le serveur Ubuntu transmet la réponse au client via pfSense.
+
+8. **Traitement final par le navigateur** :
+   - Le JavaScript dans le navigateur reçoit les données JSON.
+   - Il traite ces données et met à jour le DOM pour afficher les informations des films.
+
+
+
 ## Appendix
 
 ### Commands Utuliser
