@@ -722,7 +722,14 @@ maintenant, nous dirigeons le domaine `tpiliesharrache.grasset` vers l'IP WAN pf
 
 Cette mission a démontré avec succès la création d'un environnement réseau sécurisé et virtualisé à l'aide de VirtualBox et de pfSense. En configurant méticuleusement les paramètres réseau, en établissant des règles de pare-feu, en sécurisant les interfaces administratives avec des certificats SSL/TLS et en déployant un serveur Web, un réseau local fonctionnel et sécurisé a été établi. Le site Web hébergé est accessible à partir de la machine physique, ce qui démontre des compétences efficaces en matière de virtualisation et de gestion de réseau.
 
-### Flux d'information détaillé
+### Flux d'information, Architecture client-serveur et API
+
+
+- **Client** : Le code JavaScript s'exécute dans le navigateur de l'utilisateur sur la machine physique.
+- **Serveur** : Le serveur Apache sur Ubuntu sert les fichiers statiques (HTML, CSS, JS).
+- **API externe** : L'application fait des requêtes à l'API Ghibli (https://ghibliapi.vercel.app/films) pour récupérer les données des films.
+
+Le flux de trafic réseau est le suivant :
 
 1. **Requête initiale du client** :
    - L'utilisateur entre l'URL http://tpiliesharrache.grasset dans son navigateur sur la machine physique.
@@ -758,8 +765,101 @@ Cette mission a démontré avec succès la création d'un environnement réseau 
    - Le JavaScript dans le navigateur reçoit les données JSON.
    - Il traite ces données et met à jour le DOM pour afficher les informations des films.
 
+### Protocoles utilisés 
 
+1. **DNS (Domain Name System)** :
+   - Utilisé normalement pour résoudre les noms de domaine en adresses IP.
+   - Dans notre cas, remplacé par une entrée statique dans le fichier hosts pour tpiliesharrache.grasset.
+   - Toujours utilisé pour résoudre ghibliapi.vercel.app lors de l'appel à l'API.
 
+2. **HTTP (Hypertext Transfer Protocol)** :
+   - Version : HTTP/1.1
+   - Utilisé pour la communication entre le navigateur et le serveur Apache.
+   - Méthodes utilisées : GET (pour récupérer les fichiers statiques et les données de l'API)
+   - En-têtes importants :
+     - Host: tpiliesharrache.grasset
+     - User-Agent: [Information sur le navigateur]
+     - Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+
+3. **HTTPS (HTTP Secure)** :
+   - Utilisé pour la communication sécurisée avec l'API Ghibli.
+   - Protocole sous-jacent : TLS (Transport Layer Security)
+   - Assure le chiffrement des données échangées avec l'API.
+
+4. **TCP (Transmission Control Protocol)** :
+   - Protocole de transport utilisé par HTTP et HTTPS.
+   - Assure une transmission fiable et ordonnée des paquets.
+   - Ports utilisés : 80 (HTTP), 443 (HTTPS)
+
+5. **IP (Internet Protocol)** :
+   - Version : IPv4
+   - Gère l'adressage et le routage des paquets entre les différents réseaux.
+
+6. **ARP (Address Resolution Protocol)** :
+   - Utilisé dans le réseau local pour mapper les adresses IP aux adresses MAC.
+
+7. **SSH (Secure Shell)** :
+   - Version : SSH-2
+   - Utilisé pour l'accès sécurisé à distance au serveur Ubuntu (PuTTy).
+   - Port par défaut : 22
+
+8. **RDP (Remote Desktop Protocol)** :
+   - Utilisé pour l'accès à distance à la machine virtuelle Windows 11.
+   - Port par défaut : 3389
+
+9. **DHCP (Dynamic Host Configuration Protocol)** :
+   - Utilisé par pfSense pour attribuer des adresses IP aux machines du réseau interne.
+   - Plage d'adresses configurée : 10.10.10.100 - 10.10.10.199
+
+10. **NTP (Network Time Protocol)** :
+    - Utilisé pour synchroniser l'horloge des différentes machines du réseau.
+    - Important pour la validité des certificats SSL/TLS et la cohérence des logs.
+
+## Analyse approfondie du protocole HTTP
+
+Le protocole HTTP est crucial pour notre application. Voici une analyse détaillée d'une requête HTTP à l'API Ghibli :
+GET /films HTTP/1.1
+Host: ghibliapi.vercel.app
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36
+Accept: /
+Origin: http://tpiliesharrache.grasset
+Referer: http://tpiliesharrache.grasset/
+
+Cette requête GET demande la liste des films à l'API. La réponse contiendra un tableau JSON avec les détails des films.
+
+[ capture Wireshark ]
+
+### Configuration NAT de pfSense
+
+La configuration NAT (Network Address Translation) sur pfSense permet de rediriger le trafic entrant vers les serveurs internes :
+
+- Port 80 (HTTP) redirigé vers 10.10.10.11:80 (serveur Ubuntu)
+- Port 22 (SSH) redirigé vers 10.10.10.11:22 (accès SSH à Ubuntu)
+- Port 3389 (RDP) redirigé vers 10.10.10.10:3389 (accès RDP à Windows 11)
+
+Cette configuration permet d'exposer des services internes de manière sécurisée, en n'ouvrant que les ports nécessaires sur l'interface WAN.
+
+### Virtualisation réseau
+
+Les adaptateurs réseau de VirtualBox créent un réseau virtuel isolé :
+
+- **Adaptateur 1 (WAN) de pfSense** : Configuré en mode "Bridged", il obtient une IP du réseau physique.
+- **Adaptateur 2 (LAN) de pfSense et adaptateurs des VMs** : Configurés en mode "Internal Network", ils créent un réseau isolé nommé "ih".
+
+Cette configuration permet d'isoler le réseau virtuel du réseau physique, avec pfSense agissant comme passerelle entre les deux.
+
+### Apache VirtualHost
+
+La configuration VirtualHost d'Apache permet de servir différents sites basés sur le nom de domaine demandé. Notre configuration :
+
+```apache
+<VirtualHost *:80>
+    ServerName tpiliesharrache.grasset
+    DocumentRoot /var/www/tpiliesharrache/public_html
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+```
 ## Appendix
 
 ### Commands Utuliser
