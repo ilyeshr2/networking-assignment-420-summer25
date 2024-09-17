@@ -775,19 +775,11 @@ Le flux de trafic réseau est le suivant :
    - Le navigateur reçoit et exécute le code JavaScript.
    - Le JavaScript initie une requête XMLHttpRequest vers https://ghibliapi.vercel.app/films.
 
-5. **Nouvelle requête vers l'API externe** :
-   - Cette requête passe à nouveau par pfSense, mais cette fois en tant que trafic sortant.
-   - pfSense applique la translation d'adresse source (SNAT) pour permettre la communication avec Internet.
-
 6. **Réponse de l'API Ghibli** :
    - L'API Ghibli répond avec les données JSON des films.
-   - La réponse traverse Internet et arrive à pfSense.
+   - La réponse traverse Internet et arrive au navigateur (client).
 
-7. **Retour de la réponse au client** :
-   - pfSense applique la translation d'adresse de destination inverse (DNAT) et renvoie la réponse au serveur Ubuntu.
-   - Le serveur Ubuntu transmet la réponse au client via pfSense.
-
-8. **Traitement final par le navigateur** :
+7. **Traitement final par le navigateur** :
    - Le JavaScript dans le navigateur reçoit les données JSON.
    - Il traite ces données et met à jour le DOM pour afficher les informations des films.
 
