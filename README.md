@@ -794,15 +794,22 @@ Le flux de trafic réseau est le suivant :
    - Version : HTTP/1.1
    - Utilisé pour la communication entre le navigateur et le serveur Apache.
    - Méthodes utilisées : GET (pour récupérer les fichiers statiques et les données de l'API)
-   - En-têtes importants :
-     - Host: tpiliesharrache.grasset
-     - User-Agent: [Information sur le navigateur]
-     - Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8
+
+
+![100](https://github.com/user-attachments/assets/1a6c872d-f8c2-4c4f-9cc4-2a3e9b20805a)
+
+
+
 
 3. **HTTPS (HTTP Secure)** :
    - Utilisé pour la communication sécurisée avec l'API Ghibli.
    - Protocole sous-jacent : TLS (Transport Layer Security)
    - Assure le chiffrement des données échangées avec l'API.
+  
+     
+![98](https://github.com/user-attachments/assets/f9274c02-daca-4a71-8f4a-e21c31a154ac)
+
+     
 
 4. **TCP (Transmission Control Protocol)** :
    - Protocole de transport utilisé par HTTP et HTTPS.
@@ -835,15 +842,49 @@ Le flux de trafic réseau est le suivant :
 
 ## Analyse approfondie du protocole HTTP
 
-Le protocole HTTP est crucial pour notre application. Voici une analyse détaillée d'une requête HTTP à l'API Ghibli :
-GET /films HTTP/1.1
-Host: ghibliapi.vercel.app
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/93.0.4577.63 Safari/537.36
-Accept: /
-Origin: http://tpiliesharrache.grasset
-Referer: http://tpiliesharrache.grasset/
+Le protocole HTTP est crucial pour notre application. Voici une analyse détaillée d'une requête HTTP du client a notre serveur apach :
 
-Cette requête GET demande la liste des films à l'API. La réponse contiendra un tableau JSON avec les détails des films.
+- **General**
+   - Request URL: http://tpiliesharrache.grasset/script.js
+   - Request Method: GET
+   - Status Code: 200 OK
+   - Remote Address: 192.168.20.107:80
+   - Referrer Policy: strict-origin-when-cross-origin
+
+- **Response Headers**
+   - accept-ranges: bytes
+   - connection: Keep-Alive
+   - content-encoding: gzip
+   - content-length: 561
+   - content-type: text/javascript
+   - date: Tue, 17 Sep 2024 20:22:45 GMT
+   - etag: "4cb-6225649eaa7bb-gzip"
+   - keep-alive: timeout=5, max=100
+   - last-modified: Tue, 17 Sep 2024 20:11:02 GMT
+   - server: Apache/2.4.58 (Ubuntu)
+   - vary: Accept-Encoding
+- **Request Headers**
+   - accept: */*
+   - accept-encoding: gzip, deflate
+   - accept-language: fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7
+   - cache-control:
+   - no-cache
+   - connection: keep-alive
+   - host: tpiliesharrache.grasset
+   - pragma: no-cache
+   - referer: http://tpiliesharrache.grasset/
+   - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36
+  
+
+Cette requête HTTP est une demande **GET** pour récupérer un fichier JavaScript à l'URL `http://tpiliesharrache.grasset/script.js`. Le **code de statut 200 OK** indique que la demande a réussi et le fichier a été renvoyé avec succès. L'adresse distante montre que la réponse vient de pfsense `192.168.20.107` sur le port 80, ce qui suggère une communication HTTP classique.
+
+Les en-têtes de réponse incluent beaucoup de informations une de cest informations comme :
+- **content-type**: le fichier est du JavaScript (`text/javascript`).
+- **content-encoding**: la réponse est compressée en **gzip**.
+- **content-length**: la taille du fichier compressé est de 561 octets.
+- Le serveur utilisé est **Apache/2.4.58** tournant sur notre Ubuntu UM.
+
+Les en-têtes de requête montrent que le navigateur accepte différents formats de réponse et utilise une politique de cache stricte (`no-cache`) pour s'assurer que le fichier demandé est toujours à jour. Le client est un navigateur Chrome récent.
 
 [ capture Wireshark ]
 
