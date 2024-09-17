@@ -889,39 +889,8 @@ Les en-têtes de réponse incluent beaucoup de informations une de cest informat
 
 Les en-têtes de requête montrent que le navigateur accepte différents formats de réponse et utilise une politique de cache stricte (`no-cache`) pour s'assurer que le fichier demandé est toujours à jour. Le client est un navigateur Chrome récent.
 
-[ capture Wireshark ]
+[ TODO!: capture Wireshark ]
 
-### Configuration NAT de pfSense
-
-La configuration NAT (Network Address Translation) sur pfSense permet de rediriger le trafic entrant vers les serveurs internes :
-
-- Port 80 (HTTP) redirigé vers 10.10.10.11:80 (serveur Ubuntu)
-- Port 22 (SSH) redirigé vers 10.10.10.11:22 (accès SSH à Ubuntu)
-- Port 3389 (RDP) redirigé vers 10.10.10.10:3389 (accès RDP à Windows 11)
-
-Cette configuration permet d'exposer des services internes de manière sécurisée, en n'ouvrant que les ports nécessaires sur l'interface WAN.
-
-### Virtualisation réseau
-
-Les adaptateurs réseau de VirtualBox créent un réseau virtuel isolé :
-
-- **Adaptateur 1 (WAN) de pfSense** : Configuré en mode "Bridged", il obtient une IP du réseau physique.
-- **Adaptateur 2 (LAN) de pfSense et adaptateurs des VMs** : Configurés en mode "Internal Network", ils créent un réseau isolé nommé "ih".
-
-Cette configuration permet d'isoler le réseau virtuel du réseau physique, avec pfSense agissant comme passerelle entre les deux.
-
-### Apache VirtualHost
-
-La configuration VirtualHost d'Apache permet de servir différents sites basés sur le nom de domaine demandé. Notre configuration :
-
-```apache
-<VirtualHost *:80>
-    ServerName tpiliesharrache.grasset
-    DocumentRoot /var/www/tpiliesharrache/public_html
-    ErrorLog ${APACHE_LOG_DIR}/error.log
-    CustomLog ${APACHE_LOG_DIR}/access.log combined
-</VirtualHost>
-```
 ### Modifications de l'application pour le stockage local et l'accès hors ligne
 
 ## 1. Ajout de la fonctionnalité de stockage local
