@@ -637,16 +637,19 @@ maintenant nous avons simplifié l'accès en autorisant l'utilisation d'un nom d
      ![62](https://github.com/user-attachments/assets/49aedd0e-0dc7-475c-adef-9496d28dc9e7)
 
    - Créer `index.html`:
+     
      ```bash
      sudo vim index.html
      ```
      - ajouter le code html fourni par le prof.
    - Créer `script.js`:
+     
      ```bash
      sudo vim script.js
      ```
      - ajouter le code JavaScript fourni par le prof.
    - Créer `style.css`:
+     
      ```bash
      sudo vim style.css
      ```
@@ -660,6 +663,7 @@ maintenant nous avons simplifié l'accès en autorisant l'utilisation d'un nom d
 Il faut configurer Apache pour servir le site web personnalisé.
 
    - Copier la configuration par défaut:
+     
      ```bash
      sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/tpiliesharrache.conf
      ```
@@ -687,6 +691,7 @@ Il faut configurer Apache pour servir le site web personnalisé.
 
 
 6. **Activer le nouveau site et reload Apache:**
+   
    ```bash
    sudo a2ensite tpiliesharrache.conf
    sudo systemctl reload apache2
