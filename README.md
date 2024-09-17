@@ -809,6 +809,9 @@ Le flux de trafic réseau est le suivant :
      
 ![98](https://github.com/user-attachments/assets/f9274c02-daca-4a71-8f4a-e21c31a154ac)
 
+![99](https://github.com/user-attachments/assets/156b543e-5622-4470-9732-701f38980502)
+
+
      
 
 4. **TCP (Transmission Control Protocol)** :
