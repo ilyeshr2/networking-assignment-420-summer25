@@ -110,7 +110,7 @@ Deux machines virtuelles ont été créées: **Ubuntu Server** and **Windows 11*
    - Click `Create`.
 
 6. **Install Ubuntu Server:**
-   - Démarre la VM et suivez les invites d’installation dans le document windows11\_installation du cours system d'exploitation.
+   - Démarre la VM et suivez les invites d’installation dans le document windows11_installation du cours system d'exploitation.
 
 ## Configuration du reseau virtuel
 
@@ -138,7 +138,7 @@ Les machines virtuelles Ubuntu Server et Windows 11 étaient initialement config
 
 
 
-**Pourquoi on a fait ça:**
+**Pourquoi on a fait ça?:**
 Pour crée un réseau `privé isolé` d'autres réseaux `externes`, facilitant la communication `sécurisée` entre les machines virtuelles.
 
 ## Configuration du Pare-feu pfSense
@@ -178,6 +178,8 @@ Pour crée un réseau `privé isolé` d'autres réseaux `externes`, facilitant l
 5. **Adaptateurs reseau:**
 
     -Pour configurer un pare-feu qui peut gérer le trafic entre le réseau interne et Internet, on doit configurer 2 adaptateurs réseau :
+
+   
    - **Adaptateur 1 (WAN):**
      - **Attacher a:** Adaptateur par pont
    - **Adaptateur 2 (LAN):**
@@ -190,10 +192,10 @@ Pour crée un réseau `privé isolé` d'autres réseaux `externes`, facilitant l
 
 
 
-6. **Finaliser:**
+7. **Finaliser:**
    - Click `Create`.
 
-7. **Install pfSense:**
+8. **Install pfSense:**
    - Démarre la VM et suivez les invites d’installation de pfsense.
    - ![6](https://github.com/user-attachments/assets/a203678a-ea5e-4fdc-a895-6df094539d71)
      
@@ -237,12 +239,16 @@ Pour établir la structure du réseau et activer DHCP pour l'attribution automat
      - entrez le nouveau nombre de bits du sous-réseau `24` 
      - Configure IPv6 via DHCP (`configure IPv6 address lan interface via DHCP6 (y/n): y`).
      - Désactiver DHCP sur IPv4 pour le LAN (`for LAN, press Enter for none`).
+
+       
     -    nous faisons cela pour garantir que l'interface LAN pfSense dispose d'une adresse IP cohérente (10.10.10.1), servant de passerelle par défaut pour les clients internes.
 
-3. **Enable DHCP Server on LAN:**
+3. **Enable DHCP Server dans LAN:**
    - Définir la plage DHCP IPv4:
      - **Start:** `10.10.10.100`
      - **End:** `10.10.10.199`
+
+       
     -    nous faisons cela pour automatiser l'attribution d'adresses IP dans la plage spécifiée, facilitant ainsi la gestion du réseau.
 
 4. **Appliquer la configuration:**
@@ -268,7 +274,11 @@ Pour établir la structure du réseau et activer DHCP pour l'attribution automat
 
 
 ### Configuration des Mappages IP Statiques
+
+
 Il faut fournire des adresses IP fixes pour les machines virtuelles, garantissant un accès cohérent et facilitant les configurations des règles de pare-feu.
+
+
 1. **Acces à l'Interface Web pfSense:**
    - Dans la VM Windows 11, navigation vers `http://10.10.10.1` dans un navigateur web.
    - Identifiants utilisés:
@@ -342,7 +352,7 @@ Il faut fournire des adresses IP fixes pour les machines virtuelles, garantissan
 
 ## Configuration des Regles de Pare-feu
 
-maintenant, il faut ouvrir des ports spécifiques dans pfSense pour pouvoir accéder à des services comme SSH (pour putty), HTTP (pour le site Web) et msRDP (pour le bureau à distance). Sans ouvrir ces ports, les services des machines virtuelles ne seraient pas accessibles depuis la machine physique ou les réseaux externes.
+maintenant, il faut ouvrir des ports spécifiques dans pfSense pour pouvoir accéder à des services comme SSH (pour putty), HTTP (pour le site Web) et RDP (pour le bureau à distance). Sans ouvrir ces ports, les services des machines virtuelles ne seraient pas accessibles depuis la machine physique ou les réseaux externes.
 
 1. **Acces aux Parametres du Pare-feu pfSense:**
     - Navigation vers `Pare-feu` > `NAT` dans l'interface web pfSense
@@ -443,7 +453,7 @@ Pour améliorer la sécurité, l'interface Web pfSense a été sécurisée à l'
    - **Key Length:** 2048 bits.
    - **Digest Algorithm:** SHA256.
    - **Common Name:** `pfsenseih.grasset`.
-   - **Lifetime:** Default (e.g., 365 days).
+   - **Lifetime:** Default (3650).
    - Click `Save`.
      
    - ![46](https://github.com/user-attachments/assets/113a80d8-3e06-4c58-9475-6b09cf2ae48a)
@@ -556,15 +566,16 @@ maintenant nous avons simplifié l'accès en autorisant l'utilisation d'un nom d
 
 ## Configuration du serveur Web
 
-### Installation du LAMP Stack
+### Installation du LAMP Stack (Linux, apach, Mysql, php)
 
 1. **Acceder au serveur Ubuntu:**
    - ouvrire putty.
-   - entrez ladress WAn de pfsense.
+   - entrez ladress WAN de pfsense.
 
 2. **Mettre à jour les Package Lists:**
    ```bash
    sudo apt update
+   sudo apt upgrade
    ```
 
 3. **Installez Apache2, MariaDB Server, et PHP:**
@@ -588,6 +599,14 @@ maintenant nous avons simplifié l'accès en autorisant l'utilisation d'un nom d
      ```bash
      php -v
      ```
+![94](https://github.com/user-attachments/assets/d5686281-e489-4d0e-9a43-7269db4d1f0a)
+
+
+![95](https://github.com/user-attachments/assets/616475cb-4031-42ea-8195-2ab0c097a94d)
+
+
+![96](https://github.com/user-attachments/assets/9c70a9e2-57e2-42ed-bc64-ddc4ae5ad17e)
+
      
 ### Configuration d'Apache pour le site Web
 
@@ -638,7 +657,7 @@ maintenant nous avons simplifié l'accès en autorisant l'utilisation d'un nom d
 
 5. **Configuration de l'Hote Virtuel Apache:**
 
-Il fait configurer Apache pour servir le site web personnalisé.
+Il faut configurer Apache pour servir le site web personnalisé.
 
    - Copier la configuration par défaut:
      ```bash
