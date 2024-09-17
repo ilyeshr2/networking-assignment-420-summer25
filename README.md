@@ -687,7 +687,7 @@ Il faut configurer Apache pour servir le site web personnalisé.
        ```bash
        DocumentRoot /var/www/tpiliesharrache/public_html
        ```
-   - Enregistrer et quitter (`:wq`).
+   - Enregistrer et quitter (`:wq!`).
      
    - ![66 1](https://github.com/user-attachments/assets/6224e5bd-e018-4663-9cd8-b203063fed3d)
 
