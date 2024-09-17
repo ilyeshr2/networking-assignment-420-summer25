@@ -470,7 +470,7 @@ Pour que Windows fasse confiance aux certificats auto-signés il faut les import
 3. **Importer un certificat dans la racine de confiance:**
    - ovrire `MMC` (Microsoft Management Console):
      - Appuyer sur `Win + R`, tapez `mmc`, et appuyer `Entrée`.
-   - Add the Certificates Snap-in:
+   - Ajoutez le Snap-in du Certificates :
      - Allez a `fichier` > `ajouter/suprimer un composant logiciel enfichable...`.
      - Selectioner `Certificates` et click `Add`.
    - Accéder à `Trusted Root Certification Authorities` > `Certificates`.
