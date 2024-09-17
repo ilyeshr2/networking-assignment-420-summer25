@@ -133,6 +133,7 @@ Les machines virtuelles Ubuntu Server et Windows 11 étaient initialement config
    - Cliquez sur `OK` pour enregistrer les paramètres.
   
    - ![13](https://github.com/user-attachments/assets/62043379-ee97-46f3-83ff-f023b413e6e5)
+     
    - ![14](https://github.com/user-attachments/assets/e4fb9902-bc46-45ca-b12d-78f0b59135ae)
 
 
@@ -145,9 +146,10 @@ Pour crée un réseau `privé isolé` d'autres réseaux `externes`, facilitant l
 ### Telechargement de pfSense
 
 1. **Access au repo de pfSense:**
+   
    - Accéder à [repo.ialab.dsu.edu/pfsense/](http://repo.ialab.dsu.edu/pfsense/) pour télécharger l'ISO pfSense.
 
-2. **Download ISO:**
+3. **Download ISO:**
    - Sélectionner [pfSense-CE-2.7.2-RELEASE-amd64.iso.gz](pfSense-CE-2.7.2-RELEASE-amd64.iso.gz) et téléchargez le fichier ISO.
      
    - ![1](https://github.com/user-attachments/assets/51de48de-47fc-489c-8c72-51f6d6de646a)
@@ -183,6 +185,7 @@ Pour crée un réseau `privé isolé` d'autres réseaux `externes`, facilitant l
      - **Nom:** ih
        
      - ![4](https://github.com/user-attachments/assets/76d95e8b-b7e2-406c-8945-36c6226ea314)
+       
      - ![5](https://github.com/user-attachments/assets/0a1b892f-69a0-4f06-b1db-79c0d158a810)
 
 
@@ -193,9 +196,13 @@ Pour crée un réseau `privé isolé` d'autres réseaux `externes`, facilitant l
 7. **Install pfSense:**
    - Démarre la VM et suivez les invites d’installation de pfsense.
    - ![6](https://github.com/user-attachments/assets/a203678a-ea5e-4fdc-a895-6df094539d71)
+     
    - ![7](https://github.com/user-attachments/assets/64cc598b-7117-4ec8-b3f6-e055d4b74e88)
+     
    - ![8](https://github.com/user-attachments/assets/4662df7f-da75-4834-8df5-0ea78f2eb568)
+     
    - ![9](https://github.com/user-attachments/assets/19a7b0bb-1b1f-4993-bf70-2b39fcd68b3e)
+     
    - ![10](https://github.com/user-attachments/assets/ebbf57ab-3a54-42e8-8207-9c07e8256a5f)
      
    - noubliez paz de enlever l'image iso.
@@ -242,8 +249,11 @@ Pour établir la structure du réseau et activer DHCP pour l'attribution automat
    - appuyez sur Entrée.
      
    - ![15](https://github.com/user-attachments/assets/f1d6e0a6-3224-4072-9e22-5753a95a7ad6)
+     
    - ![16](https://github.com/user-attachments/assets/0d5f7b6c-ee42-4906-81b0-44288a687b79)
+     
    - ![17](https://github.com/user-attachments/assets/53d2eb1c-3539-419d-9b7d-05f67fb082ba)
+  
    - ![18](https://github.com/user-attachments/assets/4d6fd717-2dab-495f-b08c-5ac3500ddd1c)
 
 5. **Resultat:**
@@ -252,6 +262,7 @@ Pour établir la structure du réseau et activer DHCP pour l'attribution automat
         -`10.10.10.101` pour ubuntu server
 
    - ![19](https://github.com/user-attachments/assets/6b366b4d-1d17-4e19-b778-6f81a554833f)
+     
    - ![20](https://github.com/user-attachments/assets/784390bc-bb4f-470a-a6b3-153c48d06a17)
 
 
@@ -310,6 +321,7 @@ Il faut fournire des adresses IP fixes pour les machines virtuelles, garantissan
      - Ouvrire cmd.
      - Executer `ipconfig /release` suivi de `ipconfig /renew`.
      - Confirmer que l'adresse IP est maintenant `10.10.10.10`.
+       
      - ![29](https://github.com/user-attachments/assets/b9c0ccff-7b2d-4dc9-9990-64529cb00b93)
 
    - **Ubuntu Server VM:**
@@ -318,6 +330,7 @@ Il faut fournire des adresses IP fixes pour les machines virtuelles, garantissan
      - Dans mon cas `dhclient` nest pas présent donc jai installer avec (`sudo apt install dhclient`).
        
      - ![30](https://github.com/user-attachments/assets/dfafc7de-ff61-4b21-a817-4ea392c44ece)
+       
      - ![31](https://github.com/user-attachments/assets/fc515822-9705-4444-abf6-82ae0734eb3c)
 
 
@@ -379,6 +392,7 @@ Pour améliorer la sécurité, l'interface Web pfSense a été sécurisée à l'
 
 2. **Acceder aux certificats:**
    - Aller à `System` > `Cert. Manager` > `CAs`.
+     
    - ![41](https://github.com/user-attachments/assets/888e4bf4-1431-43b4-bc17-c184ef56dc13)
 
 
@@ -392,7 +406,9 @@ Pour améliorer la sécurité, l'interface Web pfSense a été sécurisée à l'
    - **Lifetime (days):** 3650
    - **Common Name:** `IH_autorite_de_certification`.
    - Click `Save`.
+     
    - ![42](https://github.com/user-attachments/assets/5f7ce05b-466f-476d-9113-46ee1c12ff85)
+     
    - ![43](https://github.com/user-attachments/assets/30739b8b-b06a-406e-b9fa-18b3a7add894)
 
 
@@ -408,7 +424,9 @@ Pour améliorer la sécurité, l'interface Web pfSense a été sécurisée à l'
    - **Digest Algorithm:** SHA256.
    - **Lifetime:** Default (3650).
    - **Common Name:** `IH_autorite_intermediaire_de_certification`.
+     
    - ![44](https://github.com/user-attachments/assets/43def03d-8c0e-4bcd-857b-b3f0dc199c1f)
+     
    - ![45](https://github.com/user-attachments/assets/ab159a80-c98f-45b7-a76d-75ee1cbf8bd3)
 
 
@@ -427,7 +445,9 @@ Pour améliorer la sécurité, l'interface Web pfSense a été sécurisée à l'
    - **Common Name:** `pfsenseih.grasset`.
    - **Lifetime:** Default (e.g., 365 days).
    - Click `Save`.
+     
    - ![46](https://github.com/user-attachments/assets/113a80d8-3e06-4c58-9475-6b09cf2ae48a)
+     
    - ![47](https://github.com/user-attachments/assets/784f6414-b1c9-4afd-bcf0-a60f9eb307a8)
 
 
@@ -443,6 +463,7 @@ Pour que Windows fasse confiance aux certificats auto-signés il faut les import
    - dans pfSense, alle a `System` > `Cert. Manager` > `CAs`.
    - Click `Export` button pres de `IH_autorite_de_certification`.
    - Enregistrer le fichier de certificat ( `IH_autorite_de_certification.pem`).
+     
    - ![49](https://github.com/user-attachments/assets/f2969c98-cd2b-4ab6-8d31-8cc4219f4d3f)
 
 
@@ -456,6 +477,7 @@ Pour que Windows fasse confiance aux certificats auto-signés il faut les import
    - clic droit et sélectionnez `All Tasks` > `Import`.
    - Select `IH_autorite_de_certification.pem`.
    - Confirmez que le certificat est répertorié sous `Trusted Root Certification Authorities`.
+     
    - ![48](https://github.com/user-attachments/assets/da8d1e6d-b70f-44f6-b49f-20c67586045a)
 
 
@@ -471,12 +493,14 @@ Pour chiffrer le trafic vers l'interface web pfSense et améliorer la sécurité
 
 2. **Accedez aux parametres WebConfigurator:**
    - allez a `System` > `Advanced` > `Admin Access`.
+     
    - ![50](https://github.com/user-attachments/assets/3caf6129-b2c1-430a-8766-144b86a95fd5)
 
 
 3. **Configurer HTTPS:**
    - **Protocol:** Sélectionner `HTTPS` (SSL/TLS).
    - **SSL/TLS Certificate:** Choisir `pfsenseih.grasset`.
+     
    - ![51](https://github.com/user-attachments/assets/763bc370-62d9-41f2-9735-9b33aa62fc39)
 
 
@@ -485,7 +509,9 @@ Pour chiffrer le trafic vers l'interface web pfSense et améliorer la sécurité
    - **Allow GUI Administrator Client IP Address to Change During a Login Session:** `Checked`.
    - **Disable DNS Rebinding Checks:** `Checked`.
    - **Disable HTTP_REFERER Enforcement Check:** `Checked`.
+     
    - ![52](https://github.com/user-attachments/assets/45f5f20f-bd1c-45a8-b61f-3d99d932d18c)
+     
    - ![53](https://github.com/user-attachments/assets/2cab69d8-7893-4a62-8db9-22ca4e5fabc8)
 
 
@@ -503,7 +529,9 @@ Maintenant que l'interface WebConfigurator est Sécurise, on est protéger contr
 
 1. **Modifier le fichier Hosts sur Windows 11:**
    - Accéder à `C:\Windows\System32\drivers\etc\`.
+     
    - ![55](https://github.com/user-attachments/assets/c41044d1-e508-4f70-9d51-f76ac61abdab)
+     
    - Right-click sur `hosts` et sélectionnez `Ouvrir avec le Bloc-notes` (Exécuter le Bloc-notes en tant qu’administrateur).
 
 2. **ajouter pfSense Host Entry:**
@@ -512,6 +540,7 @@ Maintenant que l'interface WebConfigurator est Sécurise, on est protéger contr
      10.10.10.1 pfsenseih.grasset
      ```
    - Enregistrer le fichier.
+     
    - ![56](https://github.com/user-attachments/assets/5380e8d1-e1fc-45b0-add6-a205923f78a3)
 
 
@@ -519,6 +548,7 @@ Maintenant que l'interface WebConfigurator est Sécurise, on est protéger contr
    - ouvrire Google Chrome.
    - aller a `https://pfsenseih.grasset`.
    - le WebConfigurator de pfSense doit se charger en toute sécurité sans avertissement de certificat.
+     
    - ![57](https://github.com/user-attachments/assets/6cfab316-f8af-4a66-a2a8-715e1baa9599)
 
 
@@ -541,6 +571,7 @@ maintenant nous avons simplifié l'accès en autorisant l'utilisation d'un nom d
    ```bash
    sudo apt install apache2 mariadb-server php
    ```
+   
    ![58](https://github.com/user-attachments/assets/94891c65-9d2f-4bc1-8053-f873225d9cea)
 
 
@@ -565,10 +596,12 @@ maintenant nous avons simplifié l'accès en autorisant l'utilisation d'un nom d
      ```bash
      wget localhost
      ```
+     
      ![60](https://github.com/user-attachments/assets/76c3f7e8-2e7f-43b4-819f-e92a7e3e123d)
 
    - Dans la machine physique, accès à http://192.168.20.107 (IP WAN pfSense).
    - Output doit afficher le contenu HTML par défaut d'Apache.
+     
    - ![61](https://github.com/user-attachments/assets/fea56ecb-66e4-43d3-806e-a635fa212039)
 
 
@@ -581,6 +614,7 @@ maintenant nous avons simplifié l'accès en autorisant l'utilisation d'un nom d
      ```bash
      cd /var/www/tpiliesharrache/public_html
      ```
+     
      ![62](https://github.com/user-attachments/assets/49aedd0e-0dc7-475c-adef-9496d28dc9e7)
 
    - Créer `index.html`:
@@ -598,6 +632,7 @@ maintenant nous avons simplifié l'accès en autorisant l'utilisation d'un nom d
      sudo vim style.css
      ```
      - ajouter le code css fourni par le prof .
+       
    - ![64](https://github.com/user-attachments/assets/f6b2709a-2df8-41e4-93b6-4b9c233c20aa)
 
 
@@ -609,12 +644,14 @@ Il fait configurer Apache pour servir le site web personnalisé.
      ```bash
      sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/tpiliesharrache.conf
      ```
+     
      ![65](https://github.com/user-attachments/assets/f4a1cd67-c30c-4561-bb81-2c6784cfb88b)
 
    - Edit la nouvelle configuration:
      ```bash
      sudo vim /etc/apache2/sites-available/tpiliesharrache.conf
      ```
+     
      ![66 0](https://github.com/user-attachments/assets/e17bf6d6-51e3-4871-973b-ae1a823676e3)
 
      - **Change `ServerName`:**
@@ -626,6 +663,7 @@ Il fait configurer Apache pour servir le site web personnalisé.
        DocumentRoot /var/www/tpiliesharrache/public_html
        ```
    - Enregistrer et quitter (`:wq`).
+     
    - ![66 1](https://github.com/user-attachments/assets/6224e5bd-e018-4663-9cd8-b203063fed3d)
 
 
@@ -634,7 +672,9 @@ Il fait configurer Apache pour servir le site web personnalisé.
    sudo a2ensite tpiliesharrache.conf
    sudo systemctl reload apache2
    ```
+   
    ![67](https://github.com/user-attachments/assets/263fbcfb-54e1-4f23-943e-cbf8ac6fcd3a)
+   
    ![68](https://github.com/user-attachments/assets/a9844456-fbfb-4e14-8ca9-b2e2feacd153)
 
 
@@ -651,6 +691,7 @@ Il fait configurer Apache pour servir le site web personnalisé.
      192.168.20.107 tpiliesharrache.grasset
      ```
    - Enregistrer le fichier.
+     
    - ![69](https://github.com/user-attachments/assets/04491a87-0032-4fa2-b9d2-a1f97bf0426b)
 
 
@@ -660,6 +701,7 @@ Il fait configurer Apache pour servir le site web personnalisé.
    - Le site Web personnalisé doit s'afficher tel que configuré.
 
 maintenant, nous dirigeons le domaine `tpiliesharrache.grasset` vers l'IP WAN pfSense (`192.168.20.107`), permettant l'accès externe au site Web hébergé.
+
 ![70](https://github.com/user-attachments/assets/dbe1ada6-ed36-45e6-a14d-d67162993776)
 
 
@@ -685,17 +727,29 @@ Cette mission a démontré avec succès la création d'un environnement réseau 
 ### Commands Utuliser
 
 ```bash
-# Ubuntu Server Commands
 sudo apt update
 sudo apt upgrade
+getmac
+ip addr
+ipconfig
+ipconfig /release
+ipconfig /renew
+sudo apt install dhclient
+sudo dhclient -v -r
+sudo dhclient -v
 sudo apt install apache2 mariadb-server php
-sudo mkdir -p /var/www/tpiliesharrache/public_html
+sudo systemctl status apache2
+sudo systemctl status mariadb
+php -v
 wget localhost
+sudo mkdir -p /var/www/tpiliesharrache/public_html
+cd /var/www/tpiliesharrache/public_html
+sudo vim index.html
+sudo vim script.js
+sudo vim style.css
 sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/tpiliesharrache.conf
+sudo vim /etc/apache2/sites-available/tpiliesharrache.conf
 sudo a2ensite tpiliesharrache.conf
 sudo systemctl reload apache2
-sudo dhclient -v -r
-sudo apt install dhclient
-sudo dhclient -v
 ```
 
