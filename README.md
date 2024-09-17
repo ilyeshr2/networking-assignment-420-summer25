@@ -678,11 +678,13 @@ Il faut configurer Apache pour servir le site web personnalisé.
      ![66 0](https://github.com/user-attachments/assets/e17bf6d6-51e3-4871-973b-ae1a823676e3)
 
      - **Change `ServerName`:**
-       ```
+       
+       ```bash
        ServerName tpiliesharrache.grasset
        ```
      - **Change `DocumentRoot`:**
-       ```
+       
+       ```bash
        DocumentRoot /var/www/tpiliesharrache/public_html
        ```
    - Enregistrer et quitter (`:wq`).
