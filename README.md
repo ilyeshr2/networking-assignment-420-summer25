@@ -860,6 +860,220 @@ La configuration VirtualHost d'Apache permet de servir différents sites basés 
     CustomLog ${APACHE_LOG_DIR}/access.log combined
 </VirtualHost>
 ```
+### Modifications de l'application pour le stockage local et l'accès hors ligne
+
+## 1. Ajout de la fonctionnalité de stockage local
+
+Nous allons utiliser IndexedDB pour stocker les données de l'API et le logo localement. Voici les modifications à apporter à votre code JavaScript :
+
+```javascript
+let db;
+
+const dbName = "GhibliDB";
+const storeName = "films";
+const logoStoreName = "logo";
+
+// Fonction pour initialiser la base de données
+function initDB() {
+  const request = indexedDB.open(dbName, 1);
+  
+  request.onerror = function(event) {
+    console.error("Erreur d'ouverture de la base de données");
+  };
+
+  request.onsuccess = function(event) {
+    db = event.target.result;
+    loadData();
+  };
+
+  request.onupgradeneeded = function(event) {
+    db = event.target.result;
+    db.createObjectStore(storeName, { keyPath: "id" });
+    db.createObjectStore(logoStoreName, { keyPath: "id" });
+  };
+}
+
+// Fonction pour charger les données
+function loadData() {
+  getLogoFromDB();
+  getFilmsFromDB();
+}
+
+// Fonction pour récupérer le logo de la base de données
+function getLogoFromDB() {
+  const transaction = db.transaction([logoStoreName], "readonly");
+  const objectStore = transaction.objectStore(logoStoreName);
+  const request = objectStore.get("logo");
+
+  request.onerror = function(event) {
+    console.error("Erreur de récupération du logo");
+  };
+
+  request.onsuccess = function(event) {
+    if (request.result) {
+      displayLogo(request.result.src);
+    } else {
+      fetchAndStoreLogo();
+    }
+  };
+}
+
+// Fonction pour récupérer et stocker le logo
+function fetchAndStoreLogo() {
+  fetch('https://taniarascia.github.io/sandbox/ghibli/logo.png')
+    .then(response => response.blob())
+    .then(blob => {
+      const reader = new FileReader();
+      reader.onloadend = function() {
+        const logoData = { id: "logo", src: reader.result };
+        storeLogo(logoData);
+        displayLogo(reader.result);
+      }
+      reader.readAsDataURL(blob);
+    })
+    .catch(error => console.error('Erreur de récupération du logo:', error));
+}
+
+// Fonction pour stocker le logo dans IndexedDB
+function storeLogo(logoData) {
+  const transaction = db.transaction([logoStoreName], "readwrite");
+  const objectStore = transaction.objectStore(logoStoreName);
+  const request = objectStore.put(logoData);
+
+  request.onerror = function(event) {
+    console.error("Erreur de stockage du logo");
+  };
+}
+
+// Fonction pour afficher le logo
+function displayLogo(src) {
+  const logo = document.createElement('img');
+  logo.src = src;
+  app.appendChild(logo);
+}
+
+// Fonction pour récupérer les films de la base de données
+function getFilmsFromDB() {
+  const transaction = db.transaction([storeName], "readonly");
+  const objectStore = transaction.objectStore(storeName);
+  const request = objectStore.getAll();
+
+  request.onerror = function(event) {
+    console.error("Erreur de récupération des films");
+  };
+
+  request.onsuccess = function(event) {
+    if (request.result.length > 0) {
+      displayFilms(request.result);
+    } else {
+      fetchAndStoreFilms();
+    }
+  };
+}
+
+// Fonction pour récupérer et stocker les films
+function fetchAndStoreFilms() {
+  fetch('https://ghibliapi.vercel.app/films')
+    .then(response => response.json())
+    .then(data => {
+      storeFilms(data);
+      displayFilms(data);
+    })
+    .catch(error => {
+      console.error('Erreur de récupération des films:', error);
+      displayErrorMessage();
+    });
+}
+
+// Fonction pour stocker les films dans IndexedDB
+function storeFilms(films) {
+  const transaction = db.transaction([storeName], "readwrite");
+  const objectStore = transaction.objectStore(storeName);
+  
+  films.forEach(film => {
+    const request = objectStore.put(film);
+    request.onerror = function(event) {
+      console.error("Erreur de stockage du film");
+    };
+  });
+}
+
+// Fonction pour afficher les films
+function displayFilms(films) {
+  const container = document.createElement('div');
+  container.setAttribute('class', 'container');
+
+  films.forEach(movie => {
+    const card = document.createElement('div');
+    card.setAttribute('class', 'card');
+
+    const h1 = document.createElement('h1');
+    h1.textContent = movie.title;
+
+    const p = document.createElement('p');
+    movie.description = movie.description.substring(0, 300);
+    p.textContent = `${movie.description}...`;
+
+    container.appendChild(card);
+    card.appendChild(h1);
+    card.appendChild(p);
+  });
+
+  app.appendChild(container);
+}
+
+// Fonction pour afficher un message d'erreur
+function displayErrorMessage() {
+  const errorMessage = document.createElement('marquee');
+  errorMessage.textContent = `Une erreur est survenue`;
+  app.appendChild(errorMessage);
+}
+
+// Initialiser la base de données au chargement de la page
+initDB();
+```
+## 2. Modifications apportées
+
+1. **Utilisation d'IndexedDB :**
+   
+   - Nous avons ajouté une base de données locale pour stocker les films et le logo.
+     
+2. **Gestion du logo :**
+
+   - Le logo est maintenant récupéré depuis la base de données locale s'il existe.
+Si le logo n'est pas en cache, il est téléchargé, stocké dans IndexedDB, puis affiché.
+
+
+3. **Gestion des films :**
+
+   - Les films sont d'abord recherchés dans la base de données locale.
+S'ils ne sont pas présents, l'application tente de les récupérer depuis l'API et les stocke localement.
+
+
+4. **Fonctionnement hors ligne :**
+
+   - Si l'application ne peut pas se connecter à l'API, elle utilisera les données stockées localement.
+Un message d'erreur s'affiche uniquement si aucune donnée n'est disponible localement et que l'API est inaccessible.
+
+
+5. **Optimisation des performances :**
+
+   - Les données sont chargées une seule fois depuis l'API, puis stockées localement.
+Les chargements ultérieurs seront plus rapides car les données seront récupérées depuis IndexedDB.
+
+![93](https://github.com/user-attachments/assets/6b0b2c43-1d0a-4c11-a2f2-18b1aeafdaa1)
+
+
+![90](https://github.com/user-attachments/assets/4392e3f5-7778-4588-bcf2-abcf713c7145)
+
+
+![91](https://github.com/user-attachments/assets/587db6ce-8ee3-4d76-b89e-74f39c137091)
+
+
+![92](https://github.com/user-attachments/assets/6475ef32-813a-47fc-8046-3538333990ca)
+
+
+
 ## Appendix
 
 ### Commands Utuliser
