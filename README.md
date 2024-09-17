@@ -1073,6 +1073,12 @@ Les chargements ultérieurs seront plus rapides car les données seront récupé
 ![92](https://github.com/user-attachments/assets/6475ef32-813a-47fc-8046-3538333990ca)
 
 
+## 2.  pourquoi cette modification? (Avantages de cette modification)
+
+   - **Résilience :** L'application fonctionne même sans connexion Internet une fois les données chargées.
+   - **Performance :** Les temps de chargement sont réduits après la première visite.
+   - **Économie de bande passante :** Les données ne sont téléchargées qu'une seule fois.
+
 
 ## Appendix
 
