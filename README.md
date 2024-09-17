@@ -149,6 +149,7 @@ Pour crée un réseau `privé isolé` d'autres réseaux `externes`, facilitant l
 
 2. **Download ISO:**
    - Sélectionner [pfSense-CE-2.7.2-RELEASE-amd64.iso.gz](pfSense-CE-2.7.2-RELEASE-amd64.iso.gz) et téléchargez le fichier ISO.
+     
    - ![1](https://github.com/user-attachments/assets/51de48de-47fc-489c-8c72-51f6d6de646a)
 
 
@@ -168,6 +169,7 @@ Pour crée un réseau `privé isolé` d'autres réseaux `externes`, facilitant l
 
 4. **Disque Dur:**
    - Définir la taille du disque a  `40 GB`.
+     
    - ![3](https://github.com/user-attachments/assets/695dc213-ba9a-4e5b-be68-00bf5cdfaa89)
 
 
@@ -179,6 +181,7 @@ Pour crée un réseau `privé isolé` d'autres réseaux `externes`, facilitant l
    - **Adaptateur 2 (LAN):**
      - **Attacher a:** Resaux interne
      - **Nom:** ih
+       
      - ![4](https://github.com/user-attachments/assets/76d95e8b-b7e2-406c-8945-36c6226ea314)
      - ![5](https://github.com/user-attachments/assets/0a1b892f-69a0-4f06-b1db-79c0d158a810)
 
@@ -194,7 +197,9 @@ Pour crée un réseau `privé isolé` d'autres réseaux `externes`, facilitant l
    - ![8](https://github.com/user-attachments/assets/4662df7f-da75-4834-8df5-0ea78f2eb568)
    - ![9](https://github.com/user-attachments/assets/19a7b0bb-1b1f-4993-bf70-2b39fcd68b3e)
    - ![10](https://github.com/user-attachments/assets/ebbf57ab-3a54-42e8-8207-9c07e8256a5f)
+     
    - noubliez paz de enlever l'image iso.
+     
    - ![11](https://github.com/user-attachments/assets/a390f179-3e7e-43ab-ae80-5eced3fb40a2)
 
 
@@ -209,6 +214,7 @@ Apres l'installation, pfSense initialise les interfaces réseau:
 
 - **WAN (em0):** IP attribuée `192.168.20.107/22` via DHCP.
 - **LAN (em1):** IP initialement attribuée `192.168.1.1/24`.
+  
 - ![12](https://github.com/user-attachments/assets/6320ac8b-bce7-46b7-ab28-7309286b8564)
 
 
@@ -234,6 +240,7 @@ Pour établir la structure du réseau et activer DHCP pour l'attribution automat
 
 4. **Appliquer la configuration:**
    - appuyez sur Entrée.
+     
    - ![15](https://github.com/user-attachments/assets/f1d6e0a6-3224-4072-9e22-5753a95a7ad6)
    - ![16](https://github.com/user-attachments/assets/0d5f7b6c-ee42-4906-81b0-44288a687b79)
    - ![17](https://github.com/user-attachments/assets/53d2eb1c-3539-419d-9b7d-05f67fb082ba)
@@ -243,6 +250,7 @@ Pour établir la structure du réseau et activer DHCP pour l'attribution automat
     -Obtention des l'adresses IP:
         -`10.10.10.100` pour Windows
         -`10.10.10.101` pour ubuntu server
+
    - ![19](https://github.com/user-attachments/assets/6b366b4d-1d17-4e19-b778-6f81a554833f)
    - ![20](https://github.com/user-attachments/assets/784390bc-bb4f-470a-a6b3-153c48d06a17)
 
@@ -255,37 +263,45 @@ Il faut fournire des adresses IP fixes pour les machines virtuelles, garantissan
    - Identifiants utilisés:
      - **Username:** admin
      - **Password:** pfsense
+       
      - ![21](https://github.com/user-attachments/assets/480c387e-f67b-4541-88d6-62ee8a0bb5d8)
 
 
 2. **Accedez aux parametres du serveur DHCP:**
    - Navigation vers `Services` > `DHCP Server`.
+     
    - ![22](https://github.com/user-attachments/assets/a9ab0818-d3a6-4be8-b23f-0bd1b042c16f)
 
 
 3. **Ajouter un Mappage Statique:**
    - Click sur `Add Static Mapping`
+     
    - ![23](https://github.com/user-attachments/assets/c9b72bbf-bce0-43d7-9afd-908eeb0bfdcd)
 
    - **Pour Windows 11:**
      - **Address MAC:** (Récupérer à partir de la machine virtuelle Windows à l'aide de `getmac`)
+       
      - ![24](https://github.com/user-attachments/assets/a1511aef-cbff-4eee-bad2-416caae521e6)
 
      - **IP Address:** `10.10.10.10`
      - **Description:** win11
+       
      - ![26](https://github.com/user-attachments/assets/cb5e102a-496d-49fd-b36f-cf981e6a86ff)
 
    - **pour Ubuntu Server:**
      - **MAC Address:** (Récupérer à partir de Ubuntu VM à l'aide de `ip addr`)
+       
      - ![25](https://github.com/user-attachments/assets/5b03a2be-93ee-428d-8c29-2e325464c4c0)
 
      - **IP Address:** `10.10.10.11`
      - **Description:** ubuntuserver
+       
      - ![27](https://github.com/user-attachments/assets/1632a714-4cbc-4215-94b0-88e9462c2004)
 
 
 4. **Appliquer la configuration:**
    - Enregistrer les mappages statiques.
+     
    - ![28](https://github.com/user-attachments/assets/71243cac-9ef8-4e7f-a5d4-15be60bbbc63)
 
 
@@ -300,12 +316,14 @@ Il faut fournire des adresses IP fixes pour les machines virtuelles, garantissan
      - Ouvrire le Terminal.
      - Executer `sudo dhclient -v -r` pour libérer l'IP.
      - Dans mon cas `dhclient` nest pas présent donc jai installer avec (`sudo apt install dhclient`).
+       
      - ![30](https://github.com/user-attachments/assets/dfafc7de-ff61-4b21-a817-4ea392c44ece)
      - ![31](https://github.com/user-attachments/assets/fc515822-9705-4444-abf6-82ae0734eb3c)
 
 
      - Execute `sudo dhclient -v` pour renouveler l'IP.
      -  Confirmer que l'adresse IP est maintenant `10.10.10.11`.
+       
      -  ![32](https://github.com/user-attachments/assets/b80d0ce3-04a6-4edf-a22d-d9ab5c5a0db3)
 
 
@@ -315,6 +333,7 @@ maintenant, il faut ouvrir des ports spécifiques dans pfSense pour pouvoir acc�
 
 1. **Acces aux Parametres du Pare-feu pfSense:**
     - Navigation vers `Pare-feu` > `NAT` dans l'interface web pfSense
+      
     - ![33](https://github.com/user-attachments/assets/e41b2fc7-b29f-4f0e-8812-f135c2e5991e)
 
     - **Ouverture du Port SSH:**
@@ -325,16 +344,19 @@ Pour permettre l'accès SSH à l'Ubuntu Server depuis l'extérieur du réseau on
         - Définition de la Plage de Ports de Destination : De `SSH` à `SSH`
         - Metre l'IP Cible de Redirection à `10.10.10.11` (Ubuntu Server)
         - Définition de l'Association de Règle de Filtrage à `Passer`
+          
         - ![34](https://github.com/user-attachments/assets/c9e6ab05-698b-4519-8284-e9f0764a4672)
 
     - **Ouverture du Port HTTP:**
 Pour permettre l'accès web à l'Ubuntu Server on doit ouvrire le port `80` (`HTTp`)
         - Répétition des étapes ci-dessus, mais pour le port HTTP
+          
         - ![37](https://github.com/user-attachments/assets/d8e800c9-86e0-4da5-8b8f-11bd3aef0bfa)
 
     - **Ouverture du Port HTTP:**
 Pour permettre l'accès bureau à distance à la VM Windows 11 on doit ouvrire le port `3390` (`MSRDP`)
         - Répétition des étapes, mais pour le port MSRDP et ciblant 10.10.10.10 (Windows 11)
+          
         - ![35](https://github.com/user-attachments/assets/3db4dc31-d267-4b3c-9dca-a8637435b5b5)
 
 ![39](https://github.com/user-attachments/assets/fc438139-c28b-4dcd-a3e2-495369b51bc2)
@@ -344,6 +366,8 @@ Pour permettre l'accès bureau à distance à la VM Windows 11 on doit ouvrire l
 ## Securisation de l'Interface Web pfSense
 
 Pour améliorer la sécurité, l'interface Web pfSense a été sécurisée à l'aide de HTTPS avec des certificats personnalisés.
+
+
 ![40](https://github.com/user-attachments/assets/25be04ef-794d-49af-9a54-209f44025a6c)
 
 
