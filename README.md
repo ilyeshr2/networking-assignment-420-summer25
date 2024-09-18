@@ -26,10 +26,20 @@
 8. [Configuration du serveur Web](#configuration-du-serveur-web)
    - [Installation du LAMP Stack](#installation-du-lamp-stack)
    - [Configuration d'Apache pour le site Web](#configuration-dapache-pour-le-site-web)
-   - [Test du serveur Web](#test-du-serveur-web)
+   - [Tester le serveur Web](#tester-le-serveur-web)
 9. [Test final et vérification](#test-final-et-verification)
-10. [Conclusion](#conclusion)
-11. [Annexe](#annexe)
+10. [Finalement](finalement)
+11. [Flux d'information, Architecture client-serveur et API](#flux-dinformation-architecture-client-serveur-et-api)
+11. [schéma-réseau](#schema-reseau)
+11. [Protocoles utilisés](#protocoles-utilises)
+
+11. [Analyse approfondie du protocole HTTP](#analyse-approfondie-du-protocole-http)
+11. [Modifications de l'application pour le stockage local et l'accès hors ligne](#Modifications-de-lapplication-pour-le-stockage-local-et-lacces-hors-ligne)
+      - [Ajout de la fonctionnalité de stockage local](#ajout-de-la-fonctionnalite-de-stockage-local)
+      - [Modifications apportées](#modifications-apportees)
+      - [pourquoi cette modification? (Avantages de cette modification)](#pourquoi-cette-modification?-(Avantages-de-cette-modification))
+
+13. [Appendix](#Appendix)
     - [Commandes utilisées](#commandes-utuliser)
 ---
 
