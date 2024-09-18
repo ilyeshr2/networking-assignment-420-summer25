@@ -915,7 +915,6 @@ Nous allons utiliser IndexedDB pour stocker les données de l'API et le logo loc
 
 ```javascript
 let db;
-
 const dbName = "GhibliDB";
 const storeName = "films";
 const logoStoreName = "logo";
@@ -996,7 +995,7 @@ function storeLogo(logoData) {
 function displayLogo(src) {
   const logo = document.createElement('img');
   logo.src = src;
-  app.appendChild(logo);
+  document.getElementById('root').appendChild(logo);
 }
 
 // Fonction pour récupérer les films de la base de données
@@ -1066,18 +1065,19 @@ function displayFilms(films) {
     card.appendChild(p);
   });
 
-  app.appendChild(container);
+  document.getElementById('root').appendChild(container);
 }
 
 // Fonction pour afficher un message d'erreur
 function displayErrorMessage() {
   const errorMessage = document.createElement('marquee');
   errorMessage.textContent = `Une erreur est survenue`;
-  app.appendChild(errorMessage);
+  document.getElementById('root').appendChild(errorMessage);
 }
 
 // Initialiser la base de données au chargement de la page
 initDB();
+
 ```
 ## 2. Modifications apportées
 
