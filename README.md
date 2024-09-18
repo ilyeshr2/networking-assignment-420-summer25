@@ -756,7 +756,7 @@ maintenant, nous dirigeons le domaine `tpiliesharrache.grasset` vers l'IP WAN pf
 
 ## Finalement
 
-avec succès on a création un environnement réseau sécurisé et virtualisé à l'aide de VirtualBox et de pfSense. En configurant méticuleusement les paramètres réseau, en établissant des règles de pare-feu, en sécurisant les interfaces administratives avec des certificats SSL/TLS et en déployant un serveur Web, un réseau local fonctionnel et sécurisé a été établi. Le site Web hébergé est accessible à partir de la machine physique.
+avec succès on a crée un environnement réseau sécurisé et virtualisé à l'aide de VirtualBox et de pfSense. En configurant méticuleusement les paramètres réseau, en établissant des règles de pare-feu, en sécurisant les interfaces administratives avec des certificats SSL/TLS et en déployant un serveur Web, un réseau local fonctionnel et sécurisé a été établi. Le site Web hébergé est accessible à partir de la machine physique.
 
 ### Flux d'information, Architecture client-serveur et API
 
