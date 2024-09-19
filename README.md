@@ -1,5 +1,5 @@
 
-# Networking assignment report
+# networking assignment report
 
 # table des matieres
 
@@ -73,10 +73,10 @@ on va cree deux machine virtuelles: **ubuntu server** et **windows 11**.
 #### vm ubuntu server
 
 1. **initiate une nouvelle vm:**
-   - dans virtualbox, on click sur le bouton  `Nouveau` .
+   - dans virtualbox, on click sur le bouton  `nouveau` .
 
-2. **Nom et systeme dexploitation:**
-   - **Nom:** ubuntu_server
+2. **nom et systeme dexploitation:**
+   - **nom:** ubuntu_server
    - **folder:**     
         ```bash
      c:\users\2417034\virtualbox vms
@@ -100,10 +100,10 @@ on va cree deux machine virtuelles: **ubuntu server** et **windows 11**.
 #### vm windows 11
 
 1. **initiate une nouvelle vm:**
-   - dans virtualbox, cliquez sur le bouton  `Nouveau` .
+   - dans virtualbox, cliquez sur le bouton  `nouveau` .
 
-2. **Nom et systeme dexploitation:**
-   - **Nom:** win
+2. **nom et systeme dexploitation:**
+   - **nom:** win
    - **folder:**     
         ```bash
      c:\users\2417034\virtualbox vms
@@ -137,7 +137,7 @@ les machines virtuelles ubuntu server et windows 11 sont initialement configuree
 3. **configurer ladaptateur:**
    - **adapter 1:**
      - **attache a:** resaux interne
-     - **Nome:** ih
+     - **nome:** ih
 
 4. **apply changes:**
    - cliquez sur `ok` pour enregistrer les parametres.
@@ -168,10 +168,10 @@ pour cree un reseau `prive isole` dautres reseaux `externes`.
 ### creation de la machine virtuelle pfsense
 
 1. **initiate une nouvelle vm:**
-   - dans virtualbox, cliquez sur le bouton `Nouveau`.
+   - dans virtualbox, cliquez sur le bouton `nouveau`.
 
-2. **Nom et systeme d'exploitation:**
-   - **Nom:** pfsense_ih
+2. **nom et systeme d'exploitation:**
+   - **nom:** pfsense_ih
    - **type:** bsd
    - **version:** freebsd (64-bit)
 
@@ -188,11 +188,11 @@ pour cree un reseau `prive isole` dautres reseaux `externes`.
     il faut configurer le parfeu pour quil gere le trafic entre internet et notre resau intern, donc on doit configurer deux adaptateurs reseau;
 
    
-   - **adaptateur 1 (waN):**
+   - **adaptateur 1 (wan):**
      - **attacher a:** acces par pont
-   - **adaptateur 2 (laN):**
+   - **adaptateur 2 (lan):**
      - **attacher a:** resaux interne
-     - **Nom:** ih
+     - **nom:** ih
        
      - ![4](https://github.com/user-attachments/assets/76d95e8b-b7e2-406c-8945-36c6226ea314)
        
@@ -229,8 +229,8 @@ pour cree un reseau `prive isole` dautres reseaux `externes`.
 
 apres l'installation, pfsense nous donne les interfaces reseau initiale:
 
-- **waN (em0):** ip attribuee `192.168.20.107/22` via dhcp.
-- **laN (em1):** ip initialement attribuee `192.168.1.1/24`.
+- **wan (em0):** ip attribuee `192.168.20.107/22` via dhcp.
+- **lan (em1):** ip initialement attribuee `192.168.1.1/24`.
   
 - ![12](https://github.com/user-attachments/assets/6320ac8b-bce7-46b7-ab28-7309286b8564)
 
@@ -238,13 +238,13 @@ apres l'installation, pfsense nous donne les interfaces reseau initiale:
 
 1. **attribuer des adresses ip dinterface:**
 pour activer le dhcp pour quil fait une attribution automatique de ip aux clients, on va attribuer des adresses ip dinterface 
-   - **configurer linterface laN:**
+   - **configurer linterface lan:**
      - definir ladresse ipv4 statique:`10.10.10.1`.
      - le nouveau nombre de bits du sous reseau `24` 
      - configure ipv6 via dhcp (`configure ipv6 address lan interface via dhcp6 (y/n): y`).
-    - nous faisons cela pour garantir que linterface laN pfsense dispose une adresse ip coherente (10.10.10.1), servant de gateway par defaut pour les clients internes.
+    - nous faisons cela pour garantir que linterface lan pfsense dispose une adresse ip coherente (10.10.10.1), servant de gateway par defaut pour les clients internes.
 
-3. **enable dhcp server dans laN:**
+3. **enable dhcp server dans lan:**
    - definir la plage dhcp ipv4:
      - **start:** `10.10.10.100`
      - **end:** `10.10.10.199`
@@ -358,14 +358,14 @@ est voila
 maintenant, il faut ouvrir des ports specifiques dans pfsense pour pouvoir acceder a des services comme ssh (pour putty), http (pour le site web) et rdp (pour le bureau a distance). sans ouvrir ces ports, les services des machines virtuelles ne seraient pas accessibles depuis la machine physique ou les reseaux externes.
 
 1. **acces aux parametres du pare-feu pfsense:**
-    - Navigation vers `pare-feu` > `Nat` dans l'interface web pfsense
+    - navigation vers `pare-feu` > `nat` dans l'interface web pfsense
       
     - ![33](https://github.com/user-attachments/assets/e41b2fc7-b29f-4f0e-8812-f135c2e5991e)
 
     - **ouverture du port ssh:**
 pour permettre l'acces ssh a l'ubuntu server depuis l'exterieur du reseau on doit ouvrire le port `22` (`ssh`)
         - clic sur `ajouter` pour creer une nouvelle regle
-        - interface: `waN`
+        - interface: `wan`
         - protocole: `tcp`
         - definition de la plage de ports de destination : de `ssh` a `ssh`
         - metre l'ip cible de redirection a `10.10.10.11` (ubuntu server)
@@ -411,13 +411,13 @@ pour ameliorer la securite, l'interface web pfsense a ete securisee a l'aide de 
 
 3. **creer une autorite de certification racine (ca):**
    - click `add`.
-   - **descriptive Name:** `ih_autorite_de_certification`
+   - **descriptive name:** `ih_autorite_de_certification`
    - **method:** create an internal certificate authority.
    - **key type:** rsa
    - **key length:** 2048 bits.
    - **digest algorithm:** sha256.
    - **lifetime (days):** 3650
-   - **common Name:** `ih_autorite_de_certification`.
+   - **common name:** `ih_autorite_de_certification`.
    - click `save`.
      
    - ![42](https://github.com/user-attachments/assets/5f7ce05b-466f-476d-9113-46ee1c12ff85)
@@ -429,14 +429,14 @@ pour ameliorer la securite, l'interface web pfsense a ete securisee a l'aide de 
 4. **creer une autorite de certification intermediaire:**
    - aller a `system` > `cert. manager` > `certificates`.
    - click `add`.
-   - **descriptive Name:** `ih_autorite_intermediaire_de_certification`.
+   - **descriptive name:** `ih_autorite_intermediaire_de_certification`.
    - **method:** create an intermediate certificate authority.
    - **signing ca:** selectioner `ih_autorite_de_certification`.
    - **key type:** rsa
    - **key length:** 2048 bits.
    - **digest algorithm:** sha256.
    - **lifetime:** default (3650).
-   - **common Name:** `ih_autorite_intermediaire_de_certification`.
+   - **common name:** `ih_autorite_intermediaire_de_certification`.
      
    - ![44](https://github.com/user-attachments/assets/43def03d-8c0e-4bcd-857b-b3f0dc199c1f)
      
@@ -449,13 +449,13 @@ pour ameliorer la securite, l'interface web pfsense a ete securisee a l'aide de 
 5. **creer un certificat de serveur:**
    - aller a `system` > `cert. manager` > `certificates`.
    - click `add`.
-   - **descriptive Name:** `pfsenseih.grasset`.
+   - **descriptive name:** `pfsenseih.grasset`.
    - **method:** create an internal certificate.
    - **certificate authority:** selectioner `ih_autorite_intermediaire_de_certification`.
    - **key type:** rsa
    - **key length:** 2048 bits.
    - **digest algorithm:** sha256.
-   - **common Name:** `pfsenseih.grasset`.
+   - **common name:** `pfsenseih.grasset`.
    - **lifetime:** default (3650).
    - click `save`.
      
@@ -520,7 +520,7 @@ pour chiffrer le trafic vers l'interface web pfsense et ameliorer la securite on
 4. **autres parametres:**
    - **enable webconfigurator login autocomplete:** `checked`.
    - **allow gui administrator client ip address to change during a login session:** `checked`.
-   - **disable dNs rebinding checks:** `checked`.
+   - **disable dns rebinding checks:** `checked`.
    - **disable http_referer enforcement check:** `checked`.
      
    - ![52](https://github.com/user-attachments/assets/45f5f20f-bd1c-45a8-b61f-3d99d932d18c)
@@ -573,7 +573,7 @@ maintenant nous avons simplifie l'acces en autorisant l'utilisation d'un nom d'h
 
 1. **acceder au serveur ubuntu:**
    - ouvrire putty.
-   - entrez ladress waN de pfsense.
+   - entrez ladress wan de pfsense.
 
 2. **mettre a jour les package lists:**
    ```bash
@@ -621,7 +621,7 @@ maintenant nous avons simplifie l'acces en autorisant l'utilisation d'un nom d'h
      
      ![60](https://github.com/user-attachments/assets/76c3f7e8-2e7f-43b4-819f-e92a7e3e123d)
 
-   - dans la machine physique, acces a http://192.168.20.107 (ip waN pfsense).
+   - dans la machine physique, acces a http://192.168.20.107 (ip wan pfsense).
    - output doit afficher le contenu html par defaut d'apach.
      
    - ![61](https://github.com/user-attachments/assets/fea56ecb-66e4-43d3-806e-a635fa212039)
@@ -680,10 +680,10 @@ il faut configurer apach pour servir le site web personnalise.
      
      ![66 0](https://github.com/user-attachments/assets/e17bf6d6-51e3-4871-973b-ae1a823676e3)
 
-     - **change `serverName`:**
+     - **change `servername`:**
        
        ```bash
-       serverName tpiliesharrache.grasset
+       servername tpiliesharrache.grasset
        ```
      - **change `documentroot`:**
        
@@ -729,7 +729,7 @@ il faut configurer apach pour servir le site web personnalise.
    - acceder a `http://tpiliesharrache.grasset`.
    - le site web personnalise doit s'afficher tel que configure.
 
-maintenant, nous dirigeons le domaine `tpiliesharrache.grasset` vers l'ip waN pfsense (`192.168.20.107`), permettant l'acces externe au site web heberge.
+maintenant, nous dirigeons le domaine `tpiliesharrache.grasset` vers l'ip wan pfsense (`192.168.20.107`), permettant l'acces externe au site web heberge.
 
 ![70](https://github.com/user-attachments/assets/dbe1ada6-ed36-45e6-a14d-d67162993776)
 
@@ -762,11 +762,11 @@ le flux de trafic reseau est le suivant :
 
 1. **requete initiale du client** :
    - l'utilisateur entre l'url http://tpiliesharrache.grasset dans son navigateur sur la machine physique.
-   - le navigateur resout le nom de domaine en utilisant le fichier hosts modifie, qui pointe vers l'adresse ip waN de pfsense (192.168.20.107).
+   - le navigateur resout le nom de domaine en utilisant le fichier hosts modifie, qui pointe vers l'adresse ip wan de pfsense (192.168.20.107).
 
 2. **traitement par pfsense** :
-   - la requete http arrive sur l'interface waN de pfsense.
-   - pfsense examine la requete et applique la regle Nat correspondante.
+   - la requete http arrive sur l'interface wan de pfsense.
+   - pfsense examine la requete et applique la regle nat correspondante.
    - la requete est redirigee vers l'adresse ip interne du serveur ubuntu (10.10.10.11) sur le port 80.
 
 3. **traitement par le serveur ubuntu** :
@@ -779,11 +779,11 @@ le flux de trafic reseau est le suivant :
    - le javascript initie une requete Xmlhttprequest vers https://ghibliapi.vercel.app/films.
 
 6. **reponse de l'api ghibli** :
-   - l'api ghibli repond avec les donnees jsoN des films.
+   - l'api ghibli repond avec les donnees json des films.
    - la reponse traverse internet et arrive au navigateur (client).
 
 7. **traitement final par le navigateur** :
-   - le javascript dans le navigateur recoit les donnees jsoN.
+   - le javascript dans le navigateur recoit les donnees json.
    - il traite ces donnees et met a jour le dom pour afficher les informations des films.
 
 
@@ -794,7 +794,7 @@ le flux de trafic reseau est le suivant :
 
 ### protocoles utilises 
 
-1. **dNs (domain Name system)** :
+1. **dns (domain name system)** :
    - utilise normalement pour resoudre les noms de domaine en adresses ip.
    - dans notre cas, remplace par une entree statique dans le fichier hosts pour tpiliesharrache.grasset.
    - toujours utilise pour resoudre ghibliapi.vercel.app lors de l'appel a l'api.
@@ -848,7 +848,7 @@ le flux de trafic reseau est le suivant :
    - utilise par pfsense pour attribuer des adresses ip aux machines du reseau interne.
    - plage d'adresses configuree : 10.10.10.100 - 10.10.10.199
 
-10. **Ntp (Network time protocol)** :
+10. **ntp (network time protocol)** :
     - utilise pour synchroniser l'horloge des differentes machines du reseau.
     - important pour la validite des certificats ssl/tls et la coherence des logs.
 
@@ -885,7 +885,7 @@ le protocole http est crucial pour notre application. voici une analyse detaille
    - host: tpiliesharrache.grasset
    - pragma: no-cache
    - referer: http://tpiliesharrache.grasset/
-   - user-agent: mozilla/5.0 (windows Nt 10.0; win64; x64) applewebkit/537.36 (khtml, like gecko) chrome/128.0.0.0 safari/537.36
+   - user-agent: mozilla/5.0 (windows nt 10.0; win64; x64) applewebkit/537.36 (khtml, like gecko) chrome/128.0.0.0 safari/537.36
   
 
 cette requete http est une demande **get** pour recuperer un fichier javascript a l'url `http://tpiliesharrache.grasset/script.js`. le **code de statut 200 ok** indique que la demande a reussi et le fichier a ete renvoye avec succes. l'adresse distante montre que la reponse vient de pfsense `192.168.20.107` sur le port 80, ce qui suggere une communication http classique.
@@ -904,17 +904,17 @@ les en-tetes de requete montrent que le navigateur accepte differents formats de
 
 ## 1. ajout de la fonctionnalite de stockage local
 
-Nous allons utiliser indexeddb pour stocker les donnees de l'api et le logo localement:
+nous allons utiliser indexeddb pour stocker les donnees de l'api et le logo localement:
 
 ```javascript
 let db;
-const dbName = "ghiblidb";
-const storeName = "films";
-const logostoreName = "logo";
+const dbname = "ghiblidb";
+const storename = "films";
+const logostorename = "logo";
 
 // fonction pour initialiser la base de donnees
 function initdb() {
-  const request = indexeddb.open(dbName, 1);
+  const request = indexeddb.open(dbname, 1);
   
   request.onerror = function(event) {
     console.error("erreur d'ouverture de la base de donnees");
@@ -927,8 +927,8 @@ function initdb() {
 
   request.onupgradeneeded = function(event) {
     db = event.target.result;
-    db.createobjectstore(storeName, { keypath: "id" });
-    db.createobjectstore(logostoreName, { keypath: "id" });
+    db.createobjectstore(storename, { keypath: "id" });
+    db.createobjectstore(logostorename, { keypath: "id" });
   };
 }
 
@@ -940,8 +940,8 @@ function loaddata() {
 
 // fonction pour recuperer le logo de la base de donnees
 function getlogofromdb() {
-  const transaction = db.transaction([logostoreName], "readonly");
-  const objectstore = transaction.objectstore(logostoreName);
+  const transaction = db.transaction([logostorename], "readonly");
+  const objectstore = transaction.objectstore(logostorename);
   const request = objectstore.get("logo");
 
   request.onerror = function(event) {
@@ -975,8 +975,8 @@ function fetchandstorelogo() {
 
 // fonction pour stocker le logo dans indexeddb
 function storelogo(logodata) {
-  const transaction = db.transaction([logostoreName], "readwrite");
-  const objectstore = transaction.objectstore(logostoreName);
+  const transaction = db.transaction([logostorename], "readwrite");
+  const objectstore = transaction.objectstore(logostorename);
   const request = objectstore.put(logodata);
 
   request.onerror = function(event) {
@@ -993,8 +993,8 @@ function displaylogo(src) {
 
 // fonction pour recuperer les films de la base de donnees
 function getfilmsfromdb() {
-  const transaction = db.transaction([storeName], "readonly");
-  const objectstore = transaction.objectstore(storeName);
+  const transaction = db.transaction([storename], "readonly");
+  const objectstore = transaction.objectstore(storename);
   const request = objectstore.getall();
 
   request.onerror = function(event) {
@@ -1026,8 +1026,8 @@ function fetchandstorefilms() {
 
 // fonction pour stocker les films dans indexeddb
 function storefilms(films) {
-  const transaction = db.transaction([storeName], "readwrite");
-  const objectstore = transaction.objectstore(storeName);
+  const transaction = db.transaction([storename], "readwrite");
+  const objectstore = transaction.objectstore(storename);
   
   films.foreach(film => {
     const request = objectstore.put(film);
@@ -1074,7 +1074,7 @@ initdb();
 ```
 
    
- - Nous avons ajoute une base de donnees locale pour stocker les films et le logo.
+ - nous avons ajoute une base de donnees locale pour stocker les films et le logo.
      
 - les films sont d'abord recherches dans la base de donnees locale.
 s'ils ne sont pas presents, l'application tente de les recuperer depuis l'api et les stocke localement.
