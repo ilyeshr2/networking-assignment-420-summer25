@@ -1,146 +1,146 @@
 
-# Networking Assignment Report
+# NetworKing assignment report
 
-# Table des matieres
+# table des matieres
 
-1. [Introduction](#introduction)
-2. [Prerequis](#prerequis)
-3. [Configuration de l'environnement virtuel](#configuration-de-lenvironnement-virtuel)
-   - [Installation de VirtualBox](#installation-de-virtualbox)
-   - [Creation des machines virtuelles](#creation-des-machines-virtuelles)
-     - [VM Ubuntu Server](#vm-ubuntu-server)
-     - [VM Windows 11](#vm-windows-11)
-4. [Configuration du reseau virtuel](#configuration-du-reseau-virtuel)
-   - [Configuration des adaptateurs reseau sur le reseau interne](#configuration-des-adaptateurs-reseau-sur-le-reseau-interne)
-5. [Configuration du pare-feu pfSense](#configuration-du-pare-feu-pfsense)
-   - [Telechargement de pfSense](#telechargement-de-pfsense)
-   - [Creation de la machine virtuelle pfSense](#creation-de-la-machine-virtuelle-pfsense)
-   - [Configuration initiale de pfSense](#configuration-initiale-de-pfsense)
-   - [Configuration des mappages IP statiques](#configuration-des-mappages-ip-statiques)
-6. [Configuration des regles de pare-feu](#configuration-des-regles-de-pare-feu)
-7. [Securisation de l'interface Web pfSense](#securisation-de-linterface-web-pfsense)
-   - [Creation d'autorites de certification et de certificats](#creation-dautorites-de-certification-et-de-certificats)
-   - [Importation du certificat CA racine dans Windows](#importation-du-certificat-ca-racine-dans-windows)
-   - [Configuration HTTPS pour pfSense](#configuration-https-pour-pfsense)
-   - [Mise a jour du fichier Hosts de Windows](#mise-a-jour-du-fichier-hosts-de-windows)
-8. [Configuration du serveur Web](#configuration-du-serveur-web)
-   - [Installation du LAMP Stack](#installation-du-lamp-stack)
-   - [Configuration d'Apache pour le site Web](#configuration-dapache-pour-le-site-web)
-   - [Tester le serveur Web](#tester-le-serveur-web)
-9. [Test final et verification](#test-final-et-verification)
-10. [Finalement](finalement)
-11. [Flux d'information, Architecture client-serveur et API](#flux-dinformation-architecture-client-serveur-et-api)
+1. [introduction](#introduction)
+2. [prerequis](#prerequis)
+3. [configuration de l'environnement virtuel](#configuration-de-lenvironnement-virtuel)
+   - [installation de virtualbox](#installation-de-virtualbox)
+   - [creation des machines virtuelles](#creation-des-machines-virtuelles)
+     - [vm ubuntu server](#vm-ubuntu-server)
+     - [vm windows 11](#vm-windows-11)
+4. [configuration du reseau virtuel](#configuration-du-reseau-virtuel)
+   - [configuration des adaptateurs reseau sur le reseau interne](#configuration-des-adaptateurs-reseau-sur-le-reseau-interne)
+5. [configuration du pare-feu pfsense](#configuration-du-pare-feu-pfsense)
+   - [telechargement de pfsense](#telechargement-de-pfsense)
+   - [creation de la machine virtuelle pfsense](#creation-de-la-machine-virtuelle-pfsense)
+   - [configuration initiale de pfsense](#configuration-initiale-de-pfsense)
+   - [configuration des mappages ip statiques](#configuration-des-mappages-ip-statiques)
+6. [configuration des regles de pare-feu](#configuration-des-regles-de-pare-feu)
+7. [securisation de l'interface web pfsense](#securisation-de-linterface-web-pfsense)
+   - [creation d'autorites de certification et de certificats](#creation-dautorites-de-certification-et-de-certificats)
+   - [importation du certificat ca racine dans windows](#importation-du-certificat-ca-racine-dans-windows)
+   - [configuration https pour pfsense](#configuration-https-pour-pfsense)
+   - [mise a jour du fichier hosts de windows](#mise-a-jour-du-fichier-hosts-de-windows)
+8. [configuration du serveur web](#configuration-du-serveur-web)
+   - [installation du lamp stacK](#installation-du-lamp-stacK)
+   - [configuration d'apach pour le site web](#configuration-dapach-pour-le-site-web)
+   - [tester le serveur web](#tester-le-serveur-web)
+9. [test final et verification](#test-final-et-verification)
+10. [finalement](finalement)
+11. [flux d'information, architecture client-serveur et api](#flux-dinformation-architecture-client-serveur-et-api)
 11. [schema-reseau](#schema-reseau)
-11. [Protocoles utilises](#protocoles-utilises)
+11. [protocoles utilises](#protocoles-utilises)
 
-11. [Analyse approfondie du protocole HTTP](#analyse-approfondie-du-protocole-http)
-11. [Modifications de l'application pour le stockage local et l'acces hors ligne](#Modifications-de-lapplication-pour-le-stockage-local-et-lacces-hors-ligne)
-      - [Ajout de la fonctionnalite de stockage local](#ajout-de-la-fonctionnalite-de-stockage-local)
-      - [Modifications apportees](#modifications-apportees)
-      - [pourquoi cette modification? (Avantages de cette modification)](#pourquoi-cette-modification?-(Avantages-de-cette-modification))
+11. [analyse approfondie du protocole http](#analyse-approfondie-du-protocole-http)
+11. [modifications de l'application pour le stocKage local et l'acces hors ligne](#modifications-de-lapplication-pour-le-stocKage-local-et-lacces-hors-ligne)
+      - [ajout de la fonctionnalite de stocKage local](#ajout-de-la-fonctionnalite-de-stocKage-local)
+      - [modifications apportees](#modifications-apportees)
+      - [pourquoi cette modification? (avantages de cette modification)](#pourquoi-cette-modification?-(avantages-de-cette-modification))
 
-13. [Appendix](#Appendix)
-    - [Commandes utilisees](#commandes-utuliser)
+13. [appendix](#appendix)
+    - [commandes utilisees](#commandes-utuliser)
 ---
 
-## Introduction
+## introduction
 
 
-dans ce rapport on va cree un reseau local securise a laide de virtualBox, pfSense, ubuntu server (vm) rt windows 11 (vm). Lobjectife est de cree un environnement virtuelle dans lequele un site web est heberge sur un serveur Ubuntu est accesible depuis notre machine physique.
+dans ce rapport on va cree un reseau local securise a laide de virtualbox, pfsense, ubuntu server (vm) rt windows 11 (vm). lobjectife est de cree un environnement virtuelle dans lequele un site web est heberge sur un serveur ubuntu est accesible depuis notre machine physique.
 
-## Prerequis
+## prerequis
 
-- Une machine physique avec des ressources suffisantes (RAM, CPU, stockage) pour heberger plusieurs machines virtuelles.
-- Une connexion Internet stable pour telecharger les logiciels et les packages logiciels.
+- une machine physique avec des ressources suffisantes (ram, cpu, stocKage) pour heberger plusieurs machines virtuelles.
+- une connexion internet stable pour telecharger les logiciels et les pacKages logiciels.
 
-## Configuration de l'Environnement Virtuel
+## configuration de l'environnement virtuel
 
-### Installation de VirtualBox
+### installation de virtualbox
 
-1. **Telecharger VirtualBox:**
-   - acceder a la page [VirtualBox Downloads](https://www.virtualbox.org/wiki/Downloads)
-   - selectionnez la version appropriee pour notre systeme dexploitation (Windows dans mon cas).
+1. **telecharger virtualbox:**
+   - acceder a la page [virtualbox downloads](https://www.virtualbox.org/wiKi/downloads)
+   - selectionnez la version appropriee pour notre systeme dexploitation (windows dans mon cas).
 
-2. **Install VirtualBox:**
+2. **install virtualbox:**
    - executez le programme dinstallation telecharger.
    - suiver les instructions a l'ecran et accepter les parametres par defaut.
    - quand linstallation est terminer on lance virtualbox.
 
-### Creation des Machines Virtuelles
+### creation des machines virtuelles
 
-on va cree deux machine virtuelles: **Ubuntu Server** et **Windows 11**.
+on va cree deux machine virtuelles: **ubuntu server** et **windows 11**.
 
-#### VM Ubuntu Server
+#### vm ubuntu server
 
-1. **Initiate une nouvelle VM:**
-   - dans virtualbox, on click sur le bouton  `Nouveau` .
+1. **initiate une nouvelle vm:**
+   - dans virtualbox, on clicK sur le bouton  `Nouveau` .
 
 2. **Nom et systeme dexploitation:**
    - **Nom:** ubuntu_server
    - **folder:**     
         ```bash
-     C:\Users\2417034\VirtualBox VMs
+     c:\users\2417034\virtualbox vms
      ```
-   - **ISO Image:** on selection l'image iso que on a telecharger du site official de ubuntu [ubuntu server](https://ubuntu.com/download/server).
-   - et on selectione 'Skip Unattended installation' pour que on install le guest OS manuellement. 
+   - **iso image:** on selection l'image iso que on a telecharger du site official de ubuntu [ubuntu server](https://ubuntu.com/download/server).
+   - et on selectione 'sKip unattended installation' pour que on install le guest os manuellement. 
 
-3. **Allocation de resources:**
+3. **allocation de resources:**
    - 2 processeurs
-   - 2048Mo de memoire.
-   - 30Go de disque
+   - 2048mo de memoire.
+   - 30go de disque
 
-5. **Finaliser:**
-   - click `Create`.
+5. **finaliser:**
+   - clicK `create`.
 
-6. **install Ubuntu Server:**
-   - on demarre la VM et on suit les invites dinstallation de Ubuntu.
-   - Configurez les parametres comme la langue et la disposition du clavier.
-   - Creer un compte utilisateur nomee ilies avec un mot de pass 123.
+6. **install ubuntu server:**
+   - on demarre la vm et on suit les invites dinstallation de ubuntu.
+   - configurez les parametres comme la langue et la disposition du clavier.
+   - creer un compte utilisateur nomee ilies avec un mot de pass 123.
 
-#### VM Windows 11
+#### vm windows 11
 
-1. **Initiate une nouvelle VM:**
-   - Dans VirtualBox, cliquez sur le bouton  `Nouveau` .
+1. **initiate une nouvelle vm:**
+   - dans virtualbox, cliquez sur le bouton  `Nouveau` .
 
 2. **Nom et systeme dexploitation:**
    - **Nom:** win
    - **folder:**     
         ```bash
-     C:\Users\2417034\VirtualBox VMs
+     c:\users\2417034\virtualbox vms
      ```
-   - **ISO Image:** on selection l'image iso que on a telecharger du site  [institutgrassetinfo](http://reseaux.institutgrassetinfo.com/windows\_11\_enterprise\_edition\_22h2\_x64.iso).
-   - et on selectione 'Skip Unattended installation' pour que on insrtall le guest OS manuellement. 
+   - **iso image:** on selection l'image iso que on a telecharger du site  [institutgrassetinfo](http://reseaux.institutgrassetinfo.com/windows\_11\_enterprise\_edition\_22h2\_x64.iso).
+   - et on selectione 'sKip unattended installation' pour que on insrtall le guest os manuellement. 
 
-3. **Allocation de resources:**
+3. **allocation de resources:**
    - 2 processeurs
-   - 3000Mo de memoire.
-   - 60Go de disque
+   - 3000mo de memoire.
+   - 60go de disque
 
-5. **Finaliser:**
-   - Click `Create`.
+5. **finaliser:**
+   - clicK `create`.
 
-6. **Install windows 11:**
-   - demarre la VM et suivere les invites dinstallation dans le document windows11_installation du cours system d'exploitation.
+6. **install windows 11:**
+   - demarre la vm et suivere les invites dinstallation dans le document windows11_installation du cours system d'exploitation.
 
-## Configuration du reseau virtuel
+## configuration du reseau virtuel
 
-### Configuration des adaptateurs reseau sur le reseau interne
+### configuration des adaptateurs reseau sur le reseau interne
 
-les machines virtuelles Ubuntu Server et Windows 11 sont initialement configurees sur adaptateur `acces par pont`. on a remplacee cette configuration par un `reseau interne` nomme `ih` (ilies harrache) pour creer un `reseau local separe`.
+les machines virtuelles ubuntu server et windows 11 sont initialement configurees sur adaptateur `acces par pont`. on a remplacee cette configuration par un `reseau interne` nomme `ih` (ilies harrache) pour creer un `reseau local separe`.
 
-1. **Acceder aux parametres de la VM:**
-   - faites un clic droit sur les deux vm dans VirtualBox et selectionnez `configuration`.
+1. **acceder aux parametres de la vm:**
+   - faites un clic droit sur les deux vm dans virtualbox et selectionnez `configuration`.
 
-2. **Acceder au reseau:**
-   - cliquez sur longlet `Reseau`.
+2. **acceder au reseau:**
+   - cliquez sur longlet `reseau`.
 
 3. **configurer ladaptateur:**
-   - **Adapter 1:**
+   - **adapter 1:**
      - **attache a:** resaux interne
      - **Nome:** ih
 
-4. **Apply Changes:**
-   - cliquez sur `OK` pour enregistrer les parametres.
+4. **apply changes:**
+   - cliquez sur `oK` pour enregistrer les parametres.
   
    - ![13](https://github.com/user-attachments/assets/62043379-ee97-46f3-83ff-f023b413e6e5)
      
@@ -148,50 +148,50 @@ les machines virtuelles Ubuntu Server et Windows 11 sont initialement configuree
 
 
 
-**Pourquoi on a fait ça?:**
+**pourquoi on a fait ca?:**
 pour cree un reseau `prive isole` dautres reseaux `externes`.
 
-## Configuration du Pare-feu pfSense
+## configuration du pare-feu pfsense
 
-### Telechargement de pfSense
+### telechargement de pfsense
 
-1. **Access au repo de pfSense:**
+1. **access au repo de pfsense:**
    
-   - acceder a [repo.ialab.dsu.edu/pfsense/](http://repo.ialab.dsu.edu/pfsense/) pour telecharger l'ISO pfSense.
+   - acceder a [repo.ialab.dsu.edu/pfsense/](http://repo.ialab.dsu.edu/pfsense/) pour telecharger l'iso pfsense.
 
-3. **telecharger ISO:**
-   - selectionner [pfSense-CE-2.7.2-RELEASE-amd64.iso.gz](pfSense-CE-2.7.2-RELEASE-amd64.iso.gz) et telecharger le fichier ISO.
+3. **telecharger iso:**
+   - selectionner [pfsense-ce-2.7.2-release-amd64.iso.gz](pfsense-ce-2.7.2-release-amd64.iso.gz) et telecharger le fichier iso.
      
    - ![1](https://github.com/user-attachments/assets/51de48de-47fc-489c-8c72-51f6d6de646a)
 
 
-### Creation de la machine virtuelle pfSense
+### creation de la machine virtuelle pfsense
 
-1. **Initiate une nouvelle VM:**
+1. **initiate une nouvelle vm:**
    - dans virtualbox, cliquez sur le bouton `Nouveau`.
 
 2. **Nom et systeme d'exploitation:**
-   - **Nom:** pfSense_ih
-   - **Type:** BSD
-   - **Version:** FreeBSD (64-bit)
+   - **Nom:** pfsense_ih
+   - **type:** bsd
+   - **version:** freebsd (64-bit)
 
-3. **Allocation de resources:**
-   - `1024 MB` de RAM.
-   - `1` CPU
-   - `40 GB`.
+3. **allocation de resources:**
+   - `1024 mb` de ram.
+   - `1` cpu
+   - `40 gb`.
      
    - ![3](https://github.com/user-attachments/assets/695dc213-ba9a-4e5b-be68-00bf5cdfaa89)
 
 
-5. **Adaptateurs reseau:**
+5. **adaptateurs reseau:**
 
     il faut configurer le parfeu pour quil gere le trafic entre internet et notre resau intern, donc on doit configurer deux adaptateurs reseau;
 
    
-   - **adaptateur 1 (WAN):**
+   - **adaptateur 1 (waN):**
      - **attacher a:** acces par pont
-   - **Adaptateur 2 (LAN):**
-     - **Attacher a:** Resaux interne
+   - **adaptateur 2 (laN):**
+     - **attacher a:** resaux interne
      - **Nom:** ih
        
      - ![4](https://github.com/user-attachments/assets/76d95e8b-b7e2-406c-8945-36c6226ea314)
@@ -200,11 +200,11 @@ pour cree un reseau `prive isole` dautres reseaux `externes`.
 
 
 
-7. **Finaliser:**
-   - Click `Create`.
+7. **finaliser:**
+   - clicK `create`.
 
-8. **Install pfSense:**
-   - Demarre la VM et suivez les invites d’installation de pfsense.
+8. **install pfsense:**
+   - demarre la vm et suivez les invites d’installation de pfsense.
    - ![6](https://github.com/user-attachments/assets/a203678a-ea5e-4fdc-a895-6df094539d71)
      
    - ![7](https://github.com/user-attachments/assets/64cc598b-7117-4ec8-b3f6-e055d4b74e88)
@@ -225,32 +225,32 @@ pour cree un reseau `prive isole` dautres reseaux `externes`.
 
 
 
-### Configuration initiale de pfSense
+### configuration initiale de pfsense
 
 apres l'installation, pfsense nous donne les interfaces reseau initiale:
 
-- **WAN (em0):** IP attribuee `192.168.20.107/22` via DHCP.
-- **LAN (em1):** IP initialement attribuee `192.168.1.1/24`.
+- **waN (em0):** ip attribuee `192.168.20.107/22` via dhcp.
+- **laN (em1):** ip initialement attribuee `192.168.1.1/24`.
   
 - ![12](https://github.com/user-attachments/assets/6320ac8b-bce7-46b7-ab28-7309286b8564)
 
 
 
-1. **attribuer des adresses IP dinterface:**
-pour activer le DHCP pour quil fait une attribution automatique de ip aux clients, on va attribuer des adresses IP dinterface 
-   - **configurer linterface LAN:**
-     - definir ladresse IPv4 statique:`10.10.10.1`.
+1. **attribuer des adresses ip dinterface:**
+pour activer le dhcp pour quil fait une attribution automatique de ip aux clients, on va attribuer des adresses ip dinterface 
+   - **configurer linterface laN:**
+     - definir ladresse ipv4 statique:`10.10.10.1`.
      - le nouveau nombre de bits du sous reseau `24` 
-     - configure IPv6 via DHCP (`configure IPv6 address lan interface via DHCP6 (y/n): y`).
-    - nous faisons cela pour garantir que linterface LAN pfSense dispose une adresse IP coherente (10.10.10.1), servant de gateway par defaut pour les clients internes.
+     - configure ipv6 via dhcp (`configure ipv6 address lan interface via dhcp6 (y/n): y`).
+    - nous faisons cela pour garantir que linterface laN pfsense dispose une adresse ip coherente (10.10.10.1), servant de gateway par defaut pour les clients internes.
 
-3. **enable DHCP Server dans LAN:**
-   - definir la plage DHCP IPv4:
-     - **Start:** `10.10.10.100`
-     - **End:** `10.10.10.199`
-    - nous faisons cela pour automatiser l'attribution d'adresses IP dans la plage specifiee, facilitant ainsi la gestion du reseau.
+3. **enable dhcp server dans laN:**
+   - definir la plage dhcp ipv4:
+     - **start:** `10.10.10.100`
+     - **end:** `10.10.10.199`
+    - nous faisons cela pour automatiser l'attribution d'adresses ip dans la plage specifiee, facilitant ainsi la gestion du reseau.
     - comme ca l'attribution d'adresses ip est fait dans cette plage 
-   - appuyez sur Entree.
+   - appuyez sur entree.
      
    - ![15](https://github.com/user-attachments/assets/f1d6e0a6-3224-4072-9e22-5753a95a7ad6)
      
@@ -260,9 +260,9 @@ pour activer le DHCP pour quil fait une attribution automatique de ip aux client
   
    - ![18](https://github.com/user-attachments/assets/4d6fd717-2dab-495f-b08c-5ac3500ddd1c)
 
-5. **Resultat:**
-    -obtention des l'adresses IP:
-        -`10.10.10.100` pour Windows
+5. **resultat:**
+    -obtention des l'adresses ip:
+        -`10.10.10.100` pour windows
         -`10.10.10.101` pour ubuntu server
 
    - ![19](https://github.com/user-attachments/assets/6b366b4d-1d17-4e19-b778-6f81a554833f)
@@ -271,64 +271,64 @@ pour activer le DHCP pour quil fait une attribution automatique de ip aux client
 
 
 
-### Configuration des Mappages IP Statiques
+### configuration des mappages ip statiques
 
 
-il faut fournire des adresses IP fixes pour les machines virtuelles.
+il faut fournire des adresses ip fixes pour les machines virtuelles.
 
 
-1. **acces a l'interface Web pfSense:**
-   - dans la vm Windows 11, on cherche `http://10.10.10.1` dans le navigateur web.
+1. **acces a l'interface web pfsense:**
+   - dans la vm windows 11, on cherche `http://10.10.10.1` dans le navigateur web.
    - identifiants utilises:
-     - **Username:** admin
-     - **Password:** pfsense
+     - **username:** admin
+     - **password:** pfsense
        
      - ![21](https://github.com/user-attachments/assets/480c387e-f67b-4541-88d6-62ee8a0bb5d8)
 
 
-2. **accedez aux parametres du serveur DHCP:**
-   - `Services` > `DHCP Server`.
+2. **accedez aux parametres du serveur dhcp:**
+   - `services` > `dhcp server`.
      
    - ![22](https://github.com/user-attachments/assets/a9ab0818-d3a6-4be8-b23f-0bd1b042c16f)
 
 
-3. **Ajouter un mappage statique:**
-   - click sur `Add Static Mapping`
+3. **ajouter un mappage statique:**
+   - clicK sur `add static mapping`
      
    - ![23](https://github.com/user-attachments/assets/c9b72bbf-bce0-43d7-9afd-908eeb0bfdcd)
 
-   - **Pour Windows 11:**
-     - **address MAC:** (Recuperer a partir de la machine virtuelle Windows a l'aide de `getmac`)
+   - **pour windows 11:**
+     - **address mac:** (recuperer a partir de la machine virtuelle windows a l'aide de `getmac`)
        
      - ![24](https://github.com/user-attachments/assets/a1511aef-cbff-4eee-bad2-416caae521e6)
 
-     - **IP Address:** `10.10.10.10`
-     - **Description:** win11
+     - **ip address:** `10.10.10.10`
+     - **description:** win11
        
      - ![26](https://github.com/user-attachments/assets/cb5e102a-496d-49fd-b36f-cf981e6a86ff)
 
-   - **pour Ubuntu Server:**
-     - **MAC Address:** (Recuperer a partir de Ubuntu vm a l'aide de `ipconfig`)
+   - **pour ubuntu server:**
+     - **mac address:** (recuperer a partir de ubuntu vm a l'aide de `ipconfig`)
        
      - ![25](https://github.com/user-attachments/assets/5b03a2be-93ee-428d-8c29-2e325464c4c0)
 
-     - **IP Address:** `10.10.10.11`
-     - **Description:** ubuntuserver
+     - **ip address:** `10.10.10.11`
+     - **description:** ubuntuserver
        
      - ![27](https://github.com/user-attachments/assets/1632a714-4cbc-4215-94b0-88e9462c2004)
 
 
-4. **Appliquer la configuration:**
-   - Enregistrer les mappages statiques.
+4. **appliquer la configuration:**
+   - enregistrer les mappages statiques.
      
    - ![28](https://github.com/user-attachments/assets/71243cac-9ef8-4e7f-a5d4-15be60bbbc63)
 
 
-5. **Renouveler les adresses IP sur les VMs:**
-   - **Windows 11 VM:**
-     - Ouvrire cmd.
-     - Executer `ipconfig /release` suivi de `ipconfig /renew`.
-     - Confirmer que l'adresse IP est maintenant `10.10.10.10`.
+5. **renouveler les adresses ip sur les vms:**
+   - **windows 11 vm:**
+     - ouvrire cmd.
+     - executer `ipconfig /release` suivi de `ipconfig /renew`.
+     - confirmer que l'adresse ip est maintenant `10.10.10.10`.
        
 
 
@@ -337,51 +337,51 @@ ensuit ipconfig/renew
 est voila
      - ![29](https://github.com/user-attachments/assets/b9c0ccff-7b2d-4dc9-9990-64529cb00b93)
 
-   - **Ubuntu Server VM:**
-     - Ouvrire le Terminal.
-     - Executer `sudo dhclient -v -r` pour liberer l'IP.
-     - Dans mon cas `dhclient` nest pas present donc jai installer avec (`sudo apt install dhclient`).
+   - **ubuntu server vm:**
+     - ouvrire le terminal.
+     - executer `sudo dhclient -v -r` pour liberer l'ip.
+     - dans mon cas `dhclient` nest pas present donc jai installer avec (`sudo apt install dhclient`).
        
      - ![30](https://github.com/user-attachments/assets/dfafc7de-ff61-4b21-a817-4ea392c44ece)
        
      - ![31](https://github.com/user-attachments/assets/fc515822-9705-4444-abf6-82ae0734eb3c)
 
 
-     - Execute `sudo dhclient -v` pour renouveler l'IP.
-     -  Confirmer que l'adresse IP est maintenant `10.10.10.11`.
+     - execute `sudo dhclient -v` pour renouveler l'ip.
+     -  confirmer que l'adresse ip est maintenant `10.10.10.11`.
        
      -  ![32](https://github.com/user-attachments/assets/b80d0ce3-04a6-4edf-a22d-d9ab5c5a0db3)
 
 
-## Configuration des Regles de Pare-feu
+## configuration des regles de pare-feu
 
-maintenant, il faut ouvrir des ports specifiques dans pfSense pour pouvoir acceder a des services comme SSH (pour putty), HTTP (pour le site Web) et RDP (pour le bureau a distance). Sans ouvrir ces ports, les services des machines virtuelles ne seraient pas accessibles depuis la machine physique ou les reseaux externes.
+maintenant, il faut ouvrir des ports specifiques dans pfsense pour pouvoir acceder a des services comme ssh (pour putty), http (pour le site web) et rdp (pour le bureau a distance). sans ouvrir ces ports, les services des machines virtuelles ne seraient pas accessibles depuis la machine physique ou les reseaux externes.
 
-1. **Acces aux Parametres du Pare-feu pfSense:**
-    - Navigation vers `Pare-feu` > `NAT` dans l'interface web pfSense
+1. **acces aux parametres du pare-feu pfsense:**
+    - Navigation vers `pare-feu` > `Nat` dans l'interface web pfsense
       
     - ![33](https://github.com/user-attachments/assets/e41b2fc7-b29f-4f0e-8812-f135c2e5991e)
 
-    - **Ouverture du Port SSH:**
-Pour permettre l'acces SSH a l'Ubuntu Server depuis l'exterieur du reseau on doit ouvrire le port `22` (`ssh`)
-        - Clic sur `Ajouter` pour creer une nouvelle regle
-        - Interface: `WAN`
-        - Protocole: `TCP`
-        - Definition de la Plage de Ports de Destination : De `SSH` a `SSH`
-        - Metre l'IP Cible de Redirection a `10.10.10.11` (Ubuntu Server)
-        - Definition de l'Association de Regle de Filtrage a `Passer`
+    - **ouverture du port ssh:**
+pour permettre l'acces ssh a l'ubuntu server depuis l'exterieur du reseau on doit ouvrire le port `22` (`ssh`)
+        - clic sur `ajouter` pour creer une nouvelle regle
+        - interface: `waN`
+        - protocole: `tcp`
+        - definition de la plage de ports de destination : de `ssh` a `ssh`
+        - metre l'ip cible de redirection a `10.10.10.11` (ubuntu server)
+        - definition de l'association de regle de filtrage a `passer`
           
         - ![34](https://github.com/user-attachments/assets/c9e6ab05-698b-4519-8284-e9f0764a4672)
 
-    - **Ouverture du Port HTTP:**
-Pour permettre l'acces web a l'Ubuntu Server on doit ouvrire le port `80` (`HTTp`)
-        - Repetition des etapes ci-dessus, mais pour le port HTTP
+    - **ouverture du port http:**
+pour permettre l'acces web a l'ubuntu server on doit ouvrire le port `80` (`http`)
+        - repetition des etapes ci-dessus, mais pour le port http
           
         - ![37](https://github.com/user-attachments/assets/d8e800c9-86e0-4da5-8b8f-11bd3aef0bfa)
 
-    - **Ouverture du Port HTTP:**
-Pour permettre l'acces bureau a distance a la VM Windows 11 on doit ouvrire le port `3389` (`MSRDP`)
-        - Repetition des etapes, mais pour le port MSRDP et ciblant 10.10.10.10 (Windows 11)
+    - **ouverture du port http:**
+pour permettre l'acces bureau a distance a la vm windows 11 on doit ouvrire le port `3389` (`msrdp`)
+        - repetition des etapes, mais pour le port msrdp et ciblant 10.10.10.10 (windows 11)
           
         - ![35](https://github.com/user-attachments/assets/3db4dc31-d267-4b3c-9dca-a8637435b5b5)
 
@@ -389,36 +389,36 @@ Pour permettre l'acces bureau a distance a la VM Windows 11 on doit ouvrire le p
 
 
 
-## Securisation de l'Interface Web pfSense
+## securisation de l'interface web pfsense
 
-Pour ameliorer la securite, l'interface Web pfSense a ete securisee a l'aide de HTTPS avec des certificats personnalises.
+pour ameliorer la securite, l'interface web pfsense a ete securisee a l'aide de https avec des certificats personnalises.
 
 
 ![40](https://github.com/user-attachments/assets/25be04ef-794d-49af-9a54-209f44025a6c)
 
 
-### Creation d'autorites de certification et de certificats
+### creation d'autorites de certification et de certificats
 
-1. **Acceder a l'interface Web de pfSense:**
-   - Acceder a `http://10.10.10.1`.
-   - Connection avec  (`admin`, `pfsense`).
+1. **acceder a l'interface web de pfsense:**
+   - acceder a `http://10.10.10.1`.
+   - connection avec  (`admin`, `pfsense`).
 
-2. **Acceder aux certificats:**
-   - Aller a `System` > `Cert. Manager` > `CAs`.
+2. **acceder aux certificats:**
+   - aller a `system` > `cert. manager` > `cas`.
      
    - ![41](https://github.com/user-attachments/assets/888e4bf4-1431-43b4-bc17-c184ef56dc13)
 
 
-3. **Creer une autorite de certification racine (CA):**
-   - Click `Add`.
-   - **Descriptive Name:** `IH_autorite_de_certification`
-   - **Method:** Create an internal Certificate Authority.
-   - **Key type:** RSA
-   - **Key Length:** 2048 bits.
-   - **Digest Algorithm:** SHA256.
-   - **Lifetime (days):** 3650
-   - **Common Name:** `IH_autorite_de_certification`.
-   - Click `Save`.
+3. **creer une autorite de certification racine (ca):**
+   - clicK `add`.
+   - **descriptive Name:** `ih_autorite_de_certification`
+   - **method:** create an internal certificate authority.
+   - **Key type:** rsa
+   - **Key length:** 2048 bits.
+   - **digest algorithm:** sha256.
+   - **lifetime (days):** 3650
+   - **common Name:** `ih_autorite_de_certification`.
+   - clicK `save`.
      
    - ![42](https://github.com/user-attachments/assets/5f7ce05b-466f-476d-9113-46ee1c12ff85)
      
@@ -426,17 +426,17 @@ Pour ameliorer la securite, l'interface Web pfSense a ete securisee a l'aide de 
 
 
 
-4. **Creer une autorite de certification intermediaire:**
-   - Aller a `System` > `Cert. Manager` > `Certificates`.
-   - Click `Add`.
-   - **Descriptive Name:** `IH_autorite_intermediaire_de_certification`.
-   - **Method:** Create an intermediate Certificate Authority.
-   - **Signing CA:** Selectioner `IH_autorite_de_certification`.
-   - **Key type:** RSA
-   - **Key Length:** 2048 bits.
-   - **Digest Algorithm:** SHA256.
-   - **Lifetime:** Default (3650).
-   - **Common Name:** `IH_autorite_intermediaire_de_certification`.
+4. **creer une autorite de certification intermediaire:**
+   - aller a `system` > `cert. manager` > `certificates`.
+   - clicK `add`.
+   - **descriptive Name:** `ih_autorite_intermediaire_de_certification`.
+   - **method:** create an intermediate certificate authority.
+   - **signing ca:** selectioner `ih_autorite_de_certification`.
+   - **Key type:** rsa
+   - **Key length:** 2048 bits.
+   - **digest algorithm:** sha256.
+   - **lifetime:** default (3650).
+   - **common Name:** `ih_autorite_intermediaire_de_certification`.
      
    - ![44](https://github.com/user-attachments/assets/43def03d-8c0e-4bcd-857b-b3f0dc199c1f)
      
@@ -444,20 +444,20 @@ Pour ameliorer la securite, l'interface Web pfSense a ete securisee a l'aide de 
 
 
    
-   - Click `Save`.
+   - clicK `save`.
 
-5. **Creer un certificat de serveur:**
-   - Aller a `System` > `Cert. Manager` > `Certificates`.
-   - Click `Add`.
-   - **Descriptive Name:** `pfsenseih.grasset`.
-   - **Method:** Create an internal Certificate.
-   - **Certificate Authority:** Selectioner `IH_autorite_intermediaire_de_certification`.
-   - **Key type:** RSA
-   - **Key Length:** 2048 bits.
-   - **Digest Algorithm:** SHA256.
-   - **Common Name:** `pfsenseih.grasset`.
-   - **Lifetime:** Default (3650).
-   - Click `Save`.
+5. **creer un certificat de serveur:**
+   - aller a `system` > `cert. manager` > `certificates`.
+   - clicK `add`.
+   - **descriptive Name:** `pfsenseih.grasset`.
+   - **method:** create an internal certificate.
+   - **certificate authority:** selectioner `ih_autorite_intermediaire_de_certification`.
+   - **Key type:** rsa
+   - **Key length:** 2048 bits.
+   - **digest algorithm:** sha256.
+   - **common Name:** `pfsenseih.grasset`.
+   - **lifetime:** default (3650).
+   - clicK `save`.
      
    - ![46](https://github.com/user-attachments/assets/113a80d8-3e06-4c58-9475-6b09cf2ae48a)
      
@@ -465,63 +465,63 @@ Pour ameliorer la securite, l'interface Web pfSense a ete securisee a l'aide de 
 
 
 
-**Pourquoi les certificats?:**
-- **Certificate Authorities (CA):** etablissez une hierarchie de confiance, permettant des connexions SSL/TLS securisees.
-- **Intermediate CA:** Ajoute une couche de securite supplementaire, en isolant l'autorite de certification racine.
-- **Server Certificate:** Facilite l'acces HTTPS a l'interface Web pfSense.
+**pourquoi les certificats?:**
+- **certificate authorities (ca):** etablissez une hierarchie de confiance, permettant des connexions ssl/tls securisees.
+- **intermediate ca:** ajoute une couche de securite supplementaire, en isolant l'autorite de certification racine.
+- **server certificate:** facilite l'acces https a l'interface web pfsense.
 
-### Importation de le CA Racine dans Windows
-Pour que Windows fasse confiance aux certificats auto-signes il faut les importee a windows
-1. **Exporter le certificat d'autorite de certification racine:**
-   - dans pfSense, alle a `System` > `Cert. Manager` > `CAs`.
-   - Click `Export` button pres de `IH_autorite_de_certification`.
-   - Enregistrer le fichier de certificat ( `IH_autorite_de_certification.pem`).
+### importation de le ca racine dans windows
+pour que windows fasse confiance aux certificats auto-signes il faut les importee a windows
+1. **exporter le certificat d'autorite de certification racine:**
+   - dans pfsense, alle a `system` > `cert. manager` > `cas`.
+   - clicK `export` button pres de `ih_autorite_de_certification`.
+   - enregistrer le fichier de certificat ( `ih_autorite_de_certification.pem`).
      
    - ![49](https://github.com/user-attachments/assets/f2969c98-cd2b-4ab6-8d31-8cc4219f4d3f)
 
 
-3. **Importer un certificat dans la racine de confiance:**
-   - ovrire `MMC` (Microsoft Management Console):
-     - Appuyer sur `Win + R`, tapez `mmc`, et appuyer `Entree`.
-   - Ajoutez le Snap-in du Certificates :
-     - Allez a `fichier` > `ajouter/suprimer un composant logiciel enfichable...`.
-     - Selectioner `Certificates` et click `Add`.
-   - Acceder a `Trusted Root Certification Authorities` > `Certificates`.
-   - clic droit et selectionnez `All Tasks` > `Import`.
-   - Select `IH_autorite_de_certification.pem`.
-   - Confirmez que le certificat est repertorie sous `Trusted Root Certification Authorities`.
+3. **importer un certificat dans la racine de confiance:**
+   - ovrire `mmc` (microsoft management console):
+     - appuyer sur `win + r`, tapez `mmc`, et appuyer `entree`.
+   - ajoutez le snap-in du certificates :
+     - allez a `fichier` > `ajouter/suprimer un composant logiciel enfichable...`.
+     - selectioner `certificates` et clicK `add`.
+   - acceder a `trusted root certification authorities` > `certificates`.
+   - clic droit et selectionnez `all tasKs` > `import`.
+   - select `ih_autorite_de_certification.pem`.
+   - confirmez que le certificat est repertorie sous `trusted root certification authorities`.
      
    - ![48](https://github.com/user-attachments/assets/da8d1e6d-b70f-44f6-b49f-20c67586045a)
 
 
-de cette maniere, nous garantissons que les connexions HTTPS a pfSense sont reconnues comme securisees par Windows 11, eliminant ainsi les avertissements du navigateur.
+de cette maniere, nous garantissons que les connexions https a pfsense sont reconnues comme securisees par windows 11, eliminant ainsi les avertissements du navigateur.
 
-### Configuration HTTPS pour pfSense
+### configuration https pour pfsense
 
-Pour chiffrer le trafic vers l'interface web pfSense et ameliorer la securite on doit configuration HTTPS pour pfSense
+pour chiffrer le trafic vers l'interface web pfsense et ameliorer la securite on doit configuration https pour pfsense
 
-1. **Acceder a l'interface Web de pfSense:**
-   - Acceder a `http://10.10.10.1`.
-   - Connection avec  (`admin`, `pfsense`).
+1. **acceder a l'interface web de pfsense:**
+   - acceder a `http://10.10.10.1`.
+   - connection avec  (`admin`, `pfsense`).
 
-2. **Accedez aux parametres WebConfigurator:**
-   - allez a `System` > `Advanced` > `Admin Access`.
+2. **accedez aux parametres webconfigurator:**
+   - allez a `system` > `advanced` > `admin access`.
      
    - ![50](https://github.com/user-attachments/assets/3caf6129-b2c1-430a-8766-144b86a95fd5)
 
 
-3. **Configurer HTTPS:**
-   - **Protocol:** Selectionner `HTTPS` (SSL/TLS).
-   - **SSL/TLS Certificate:** Choisir `pfsenseih.grasset`.
+3. **configurer https:**
+   - **protocol:** selectionner `https` (ssl/tls).
+   - **ssl/tls certificate:** choisir `pfsenseih.grasset`.
      
    - ![51](https://github.com/user-attachments/assets/763bc370-62d9-41f2-9735-9b33aa62fc39)
 
 
 4. **autres parametres:**
-   - **Enable WebConfigurator Login Autocomplete:** `Checked`.
-   - **Allow GUI Administrator Client IP Address to Change During a Login Session:** `Checked`.
-   - **Disable DNS Rebinding Checks:** `Checked`.
-   - **Disable HTTP_REFERER Enforcement Check:** `Checked`.
+   - **enable webconfigurator login autocomplete:** `checKed`.
+   - **allow gui administrator client ip address to change during a login session:** `checKed`.
+   - **disable dNs rebinding checKs:** `checKed`.
+   - **disable http_referer enforcement checK:** `checKed`.
      
    - ![52](https://github.com/user-attachments/assets/45f5f20f-bd1c-45a8-b61f-3d99d932d18c)
      
@@ -529,76 +529,76 @@ Pour chiffrer le trafic vers l'interface web pfSense et ameliorer la securite on
 
 
 
-5. **Enregistrer et appliquer:**
-   - Click `Save` pour appliquer les parametres.
+5. **enregistrer et appliquer:**
+   - clicK `save` pour appliquer les parametres.
 
-Maintenant que l'interface WebConfigurator est Securise, on est proteger contre les ecoutes clandestines (eavesdropping) et les attaques de l'homme du milieu (man-in-the-middle).
+maintenant que l'interface webconfigurator est securise, on est proteger contre les ecoutes clandestines (eavesdropping) et les attaques de l'homme du milieu (man-in-the-middle).
 
 
 ![54](https://github.com/user-attachments/assets/bfb3086b-262f-4b4e-a868-4d5242ad3ddb)
 
 
-### Mise a Jour du Fichier Hosts de Windows
+### mise a jour du fichier hosts de windows
 
-1. **Modifier le fichier Hosts sur Windows 11:**
-   - Acceder a `C:\Windows\System32\drivers\etc\`.
+1. **modifier le fichier hosts sur windows 11:**
+   - acceder a `c:\windows\system32\drivers\etc\`.
      
    - ![55](https://github.com/user-attachments/assets/c41044d1-e508-4f70-9d51-f76ac61abdab)
      
-   - Right-click sur `hosts` et selectionnez `Ouvrir avec le Bloc-notes` (Executer le Bloc-notes en tant qu’administrateur).
+   - right-clicK sur `hosts` et selectionnez `ouvrir avec le bloc-notes` (executer le bloc-notes en tant qu’administrateur).
 
-2. **ajouter pfSense Host Entry:**
-   - Ajoutez la ligne suivante:
+2. **ajouter pfsense host entry:**
+   - ajoutez la ligne suivante:
      ```
      10.10.10.1 pfsenseih.grasset
      ```
-   - Enregistrer le fichier.
+   - enregistrer le fichier.
      
    - ![56](https://github.com/user-attachments/assets/5380e8d1-e1fc-45b0-add6-a205923f78a3)
 
 
-3. **Acceder a pfSense via Hostname:**
-   - ouvrire Google Chrome.
+3. **acceder a pfsense via hostname:**
+   - ouvrire google chrome.
    - aller a `https://pfsenseih.grasset`.
-   - le WebConfigurator de pfSense doit se charger en toute securite sans avertissement de certificat.
+   - le webconfigurator de pfsense doit se charger en toute securite sans avertissement de certificat.
      
    - ![57](https://github.com/user-attachments/assets/6cfab316-f8af-4a66-a2a8-715e1baa9599)
 
 
-maintenant nous avons simplifie l'acces en autorisant l'utilisation d'un nom d'hôte convivial au lieu de l'adresse IP
+maintenant nous avons simplifie l'acces en autorisant l'utilisation d'un nom d'hote convivial au lieu de l'adresse ip
 
-## Configuration du serveur Web
+## configuration du serveur web
 
-### Installation du LAMP Stack (Linux, apach, Mysql, php)
+### installation du lamp stacK (linux, apach, mysql, php)
 
-1. **Acceder au serveur Ubuntu:**
+1. **acceder au serveur ubuntu:**
    - ouvrire putty.
-   - entrez ladress WAN de pfsense.
+   - entrez ladress waN de pfsense.
 
-2. **Mettre a jour les Package Lists:**
+2. **mettre a jour les pacKage lists:**
    ```bash
    sudo apt update
    sudo apt upgrade
    ```
 
-3. **Installez Apache2, MariaDB Server, et PHP:**
+3. **installez apach2, mariadb server, et php:**
    ```bash
-   sudo apt install apache2 mariadb-server php
+   sudo apt install apach2 mariadb-server php
    ```
    
    ![58](https://github.com/user-attachments/assets/94891c65-9d2f-4bc1-8053-f873225d9cea)
 
 
-4. **Verifier l'installation:**
-   - Verifier l'etat d'Apache2:
+4. **verifier l'installation:**
+   - verifier l'etat d'apach2:
      ```bash
-     sudo systemctl status apache2
+     sudo systemctl status apach2
      ```
-   - Assurez-vous que MariaDB est en cours d'execution:
+   - assurez-vous que mariadb est en cours d'execution:
      ```bash
      sudo systemctl status mariadb
      ```
-   - Confirmer l'installation de PHP:
+   - confirmer l'installation de php:
      ```bash
      php -v
      ```
@@ -611,47 +611,47 @@ maintenant nous avons simplifie l'acces en autorisant l'utilisation d'un nom d'h
 ![96](https://github.com/user-attachments/assets/9c70a9e2-57e2-42ed-bc64-ddc4ae5ad17e)
 
      
-### Configuration d'Apache pour le site Web
+### configuration d'apach pour le site web
 
-1. **Tester l'installation d'Apache:**
-   - Dans ubuntu executez:
+1. **tester l'installation d'apach:**
+   - dans ubuntu executez:
      ```bash
      wget localhost
      ```
      
      ![60](https://github.com/user-attachments/assets/76c3f7e8-2e7f-43b4-819f-e92a7e3e123d)
 
-   - Dans la machine physique, acces a http://192.168.20.107 (IP WAN pfSense).
-   - Output doit afficher le contenu HTML par defaut d'Apache.
+   - dans la machine physique, acces a http://192.168.20.107 (ip waN pfsense).
+   - output doit afficher le contenu html par defaut d'apach.
      
    - ![61](https://github.com/user-attachments/assets/fea56ecb-66e4-43d3-806e-a635fa212039)
 
 
-2. **Creer une structure de repertoire de site Web:**
+2. **creer une structure de repertoire de site web:**
    ```bash
-   sudo mkdir -p /var/www/tpiliesharrache/public_html
+   sudo mKdir -p /var/www/tpiliesharrache/public_html
    ```
-3. **Creer des fichiers de site Web:**
-   - Acceder au repertoire du site Web:
+3. **creer des fichiers de site web:**
+   - acceder au repertoire du site web:
      ```bash
      cd /var/www/tpiliesharrache/public_html
      ```
      
      ![62](https://github.com/user-attachments/assets/49aedd0e-0dc7-475c-adef-9496d28dc9e7)
 
-   - Creer `index.html`:
+   - creer `index.html`:
      
      ```bash
      sudo vim index.html
      ```
      - ajouter le code html fourni par le prof.
-   - Creer `script.js`:
+   - creer `script.js`:
      
      ```bash
      sudo vim script.js
      ```
-     - ajouter le code JavaScript fourni par le prof.
-   - Creer `style.css`:
+     - ajouter le code javascript fourni par le prof.
+   - creer `style.css`:
      
      ```bash
      sudo vim style.css
@@ -661,45 +661,45 @@ maintenant nous avons simplifie l'acces en autorisant l'utilisation d'un nom d'h
    - ![64](https://github.com/user-attachments/assets/f6b2709a-2df8-41e4-93b6-4b9c233c20aa)
 
 
-5. **Configuration de l'Hote Virtuel Apache:**
+5. **configuration de l'hote virtuel apach:**
 
-Il faut configurer Apache pour servir le site web personnalise.
+il faut configurer apach pour servir le site web personnalise.
 
-   - Copier la configuration par defaut:
+   - copier la configuration par defaut:
      
      ```bash
-     sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/tpiliesharrache.conf
+     sudo cp /etc/apach2/sites-available/000-default.conf /etc/apach2/sites-available/tpiliesharrache.conf
      ```
      
      ![65](https://github.com/user-attachments/assets/f4a1cd67-c30c-4561-bb81-2c6784cfb88b)
 
-   - Edit la nouvelle configuration:
+   - edit la nouvelle configuration:
      ```bash
-     sudo vim /etc/apache2/sites-available/tpiliesharrache.conf
+     sudo vim /etc/apach2/sites-available/tpiliesharrache.conf
      ```
      
      ![66 0](https://github.com/user-attachments/assets/e17bf6d6-51e3-4871-973b-ae1a823676e3)
 
-     - **Change `ServerName`:**
+     - **change `serverName`:**
        
        ```bash
-       ServerName tpiliesharrache.grasset
+       serverName tpiliesharrache.grasset
        ```
-     - **Change `DocumentRoot`:**
+     - **change `documentroot`:**
        
        ```bash
-       DocumentRoot /var/www/tpiliesharrache/public_html
+       documentroot /var/www/tpiliesharrache/public_html
        ```
-   - Enregistrer et quitter (`:wq!`).
+   - enregistrer et quitter (`:wq!`).
      
    - ![66 1](https://github.com/user-attachments/assets/6224e5bd-e018-4663-9cd8-b203063fed3d)
 
 
-6. **Activer le nouveau site et reload Apache:**
+6. **activer le nouveau site et reload apach:**
    
    ```bash
    sudo a2ensite tpiliesharrache.conf
-   sudo systemctl reload apache2
+   sudo systemctl reload apach2
    ```
    
    ![67](https://github.com/user-attachments/assets/263fbcfb-54e1-4f23-943e-cbf8ac6fcd3a)
@@ -708,83 +708,83 @@ Il faut configurer Apache pour servir le site web personnalise.
 
 
 
-**un Custom Virtual Host:** Permet d'heberger plusieurs sites Web sur le meme serveur, chacun avec son propre nom de domaine et son propre repertoire.
+**un custom virtual host:** permet d'heberger plusieurs sites web sur le meme serveur, chacun avec son propre nom de domaine et son propre repertoire.
 
-### Tester le serveur Web
+### tester le serveur web
 
-1. **Mise a Jour du Fichier Hosts de la Machine Physique:**
-   - Acceder a `C:\Windows\System32\drivers\etc\`.
-   - Ouvrez `hosts` avec le Bloc-notes en tant qu’administrateur.
-   - Ajoutez la ligne suivante:
+1. **mise a jour du fichier hosts de la machine physique:**
+   - acceder a `c:\windows\system32\drivers\etc\`.
+   - ouvrez `hosts` avec le bloc-notes en tant qu’administrateur.
+   - ajoutez la ligne suivante:
      ```
      192.168.20.107 tpiliesharrache.grasset
      ```
-   - Enregistrer le fichier.
+   - enregistrer le fichier.
      
    - ![69](https://github.com/user-attachments/assets/04491a87-0032-4fa2-b9d2-a1f97bf0426b)
 
 
-2. **Acceder au site Web:**
-   - Sur la machine physique, ouvrez Google Chrome.
-   - Acceder a `http://tpiliesharrache.grasset`.
-   - Le site Web personnalise doit s'afficher tel que configure.
+2. **acceder au site web:**
+   - sur la machine physique, ouvrez google chrome.
+   - acceder a `http://tpiliesharrache.grasset`.
+   - le site web personnalise doit s'afficher tel que configure.
 
-maintenant, nous dirigeons le domaine `tpiliesharrache.grasset` vers l'IP WAN pfSense (`192.168.20.107`), permettant l'acces externe au site Web heberge.
+maintenant, nous dirigeons le domaine `tpiliesharrache.grasset` vers l'ip waN pfsense (`192.168.20.107`), permettant l'acces externe au site web heberge.
 
 ![70](https://github.com/user-attachments/assets/dbe1ada6-ed36-45e6-a14d-d67162993776)
 
 
-## Test final et verification
+## test final et verification
 
-1. **SSH a Ubuntu Server:**
-     - Ouvrir PuTTY sur Windows 10 (physique).
-     - Connect a `192.168.20.107` via SSH.
-2. **MSRDP Remote Desktop a Windows 10:**
-     - Utilisez la connexion Bureau a distance sur Windows physique .
-     - Connect a `192.168.20.107`.
-3.  **HTTP:** 
-    - Acceder a `http://tpiliesharrache.grasset` avec un navigateure dans la machine physique.
-
-
-
-## Finalement
-
-avec succes on a cree un environnement reseau securise et virtualise a l'aide de VirtualBox et de pfSense. En configurant meticuleusement les parametres reseau, en etablissant des regles de pare-feu, en securisant les interfaces administratives avec des certificats SSL/TLS et en deployant un serveur Web, un reseau local fonctionnel et securise a ete etabli. Le site Web heberge est accessible a partir de la machine physique.
-
-### Flux d'information, Architecture client-serveur et API
+1. **ssh a ubuntu server:**
+     - ouvrir puttY sur windows 10 (physique).
+     - connect a `192.168.20.107` via ssh.
+2. **msrdp remote desKtop a windows 10:**
+     - utilisez la connexion bureau a distance sur windows physique .
+     - connect a `192.168.20.107`.
+3.  **http:** 
+    - acceder a `http://tpiliesharrache.grasset` avec un navigateure dans la machine physique.
 
 
-- **Client** : Le code JavaScript s'execute dans le navigateur de l'utilisateur sur la machine physique.
-- **Serveur** : Le serveur Apache sur Ubuntu sert les fichiers statiques (HTML, CSS, JS).
-- **API externe** : L'application fait des requetes a l'API Ghibli (https://ghibliapi.vercel.app/films) pour recuperer les donnees des films.
 
-Le flux de trafic reseau est le suivant :
+## finalement
 
-1. **Requete initiale du client** :
-   - L'utilisateur entre l'URL http://tpiliesharrache.grasset dans son navigateur sur la machine physique.
-   - Le navigateur resout le nom de domaine en utilisant le fichier hosts modifie, qui pointe vers l'adresse IP WAN de pfSense (192.168.20.107).
+avec succes on a cree un environnement reseau securise et virtualise a l'aide de virtualbox et de pfsense. en configurant meticuleusement les parametres reseau, en etablissant des regles de pare-feu, en securisant les interfaces administratives avec des certificats ssl/tls et en deployant un serveur web, un reseau local fonctionnel et securise a ete etabli. le site web heberge est accessible a partir de la machine physique.
 
-2. **Traitement par pfSense** :
-   - La requete HTTP arrive sur l'interface WAN de pfSense.
-   - pfSense examine la requete et applique la regle NAT correspondante.
-   - La requete est redirigee vers l'adresse IP interne du serveur Ubuntu (10.10.10.11) sur le port 80.
+### flux d'information, architecture client-serveur et api
 
-3. **Traitement par le serveur Ubuntu** :
-   - Apache reçoit la requete HTTP sur le port 80.
-   - Le VirtualHost correspondant a "tpiliesharrache.grasset" est selectionne.
-   - Apache sert les fichiers statiques (HTML, CSS, JS) depuis le repertoire /var/www/tpiliesharrache/public_html.
 
-4. **Execution du code JavaScript** :
-   - Le navigateur reçoit et execute le code JavaScript.
-   - Le JavaScript initie une requete XMLHttpRequest vers https://ghibliapi.vercel.app/films.
+- **client** : le code javascript s'execute dans le navigateur de l'utilisateur sur la machine physique.
+- **serveur** : le serveur apach sur ubuntu sert les fichiers statiques (html, css, js).
+- **api externe** : l'application fait des requetes a l'api ghibli (https://ghibliapi.vercel.app/films) pour recuperer les donnees des films.
 
-6. **Reponse de l'API Ghibli** :
-   - L'API Ghibli repond avec les donnees JSON des films.
-   - La reponse traverse Internet et arrive au navigateur (client).
+le flux de trafic reseau est le suivant :
 
-7. **Traitement final par le navigateur** :
-   - Le JavaScript dans le navigateur reçoit les donnees JSON.
-   - Il traite ces donnees et met a jour le DOM pour afficher les informations des films.
+1. **requete initiale du client** :
+   - l'utilisateur entre l'url http://tpiliesharrache.grasset dans son navigateur sur la machine physique.
+   - le navigateur resout le nom de domaine en utilisant le fichier hosts modifie, qui pointe vers l'adresse ip waN de pfsense (192.168.20.107).
+
+2. **traitement par pfsense** :
+   - la requete http arrive sur l'interface waN de pfsense.
+   - pfsense examine la requete et applique la regle Nat correspondante.
+   - la requete est redirigee vers l'adresse ip interne du serveur ubuntu (10.10.10.11) sur le port 80.
+
+3. **traitement par le serveur ubuntu** :
+   - apach recoit la requete http sur le port 80.
+   - le virtualhost correspondant a "tpiliesharrache.grasset" est selectionne.
+   - apach sert les fichiers statiques (html, css, js) depuis le repertoire /var/www/tpiliesharrache/public_html.
+
+4. **execution du code javascript** :
+   - le navigateur recoit et execute le code javascript.
+   - le javascript initie une requete Xmlhttprequest vers https://ghibliapi.vercel.app/films.
+
+6. **reponse de l'api ghibli** :
+   - l'api ghibli repond avec les donnees jsoN des films.
+   - la reponse traverse internet et arrive au navigateur (client).
+
+7. **traitement final par le navigateur** :
+   - le javascript dans le navigateur recoit les donnees jsoN.
+   - il traite ces donnees et met a jour le dom pour afficher les informations des films.
 
 
 ### schema reseau
@@ -792,17 +792,17 @@ Le flux de trafic reseau est le suivant :
 ![102](https://github.com/user-attachments/assets/bcbee948-4f26-4444-87d4-fbc2bb2c2693)
 
 
-### Protocoles utilises 
+### protocoles utilises 
 
-1. **DNS (Domain Name System)** :
-   - Utilise normalement pour resoudre les noms de domaine en adresses IP.
-   - Dans notre cas, remplace par une entree statique dans le fichier hosts pour tpiliesharrache.grasset.
-   - Toujours utilise pour resoudre ghibliapi.vercel.app lors de l'appel a l'API.
+1. **dNs (domain Name system)** :
+   - utilise normalement pour resoudre les noms de domaine en adresses ip.
+   - dans notre cas, remplace par une entree statique dans le fichier hosts pour tpiliesharrache.grasset.
+   - toujours utilise pour resoudre ghibliapi.vercel.app lors de l'appel a l'api.
 
-2. **HTTP (Hypertext Transfer Protocol)** :
-   - Version : HTTP/1.1
-   - Utilise pour la communication entre le navigateur et le serveur Apache.
-   - Methodes utilisees : GET (pour recuperer les fichiers statiques et les donnees de l'API)
+2. **http (hypertext transfer protocol)** :
+   - version : http/1.1
+   - utilise pour la communication entre le navigateur et le serveur apach.
+   - methodes utilisees : get (pour recuperer les fichiers statiques et les donnees de l'api)
 
 
 ![100](https://github.com/user-attachments/assets/1a6c872d-f8c2-4c4f-9cc4-2a3e9b20805a)
@@ -810,10 +810,10 @@ Le flux de trafic reseau est le suivant :
 
 
 
-3. **HTTPS (HTTP Secure)** :
-   - Utilise pour la communication securisee avec l'API Ghibli.
-   - Protocole sous-jacent : TLS (Transport Layer Security)
-   - Assure le chiffrement des donnees echangees avec l'API.
+3. **https (http secure)** :
+   - utilise pour la communication securisee avec l'api ghibli.
+   - protocole sous-jacent : tls (transport layer security)
+   - assure le chiffrement des donnees echangees avec l'api.
   
      
 ![98](https://github.com/user-attachments/assets/f9274c02-daca-4a71-8f4a-e21c31a154ac)
@@ -823,261 +823,261 @@ Le flux de trafic reseau est le suivant :
 
      
 
-4. **TCP (Transmission Control Protocol)** :
-   - Protocole de transport utilise par HTTP et HTTPS.
-   - Assure une transmission fiable et ordonnee des paquets.
-   - Ports utilises : 80 (HTTP), 443 (HTTPS)
+4. **tcp (transmission control protocol)** :
+   - protocole de transport utilise par http et https.
+   - assure une transmission fiable et ordonnee des paquets.
+   - ports utilises : 80 (http), 443 (https)
 
-5. **IP (Internet Protocol)** :
-   - Version : IPv4
-   - Gere l'adressage et le routage des paquets entre les differents reseaux.
+5. **ip (internet protocol)** :
+   - version : ipv4
+   - gere l'adressage et le routage des paquets entre les differents reseaux.
 
-6. **ARP (Address Resolution Protocol)** :
-   - Utilise dans le reseau local pour mapper les adresses IP aux adresses MAC.
+6. **arp (address resolution protocol)** :
+   - utilise dans le reseau local pour mapper les adresses ip aux adresses mac.
 
-7. **SSH (Secure Shell)** :
-   - Version : SSH-2
-   - Utilise pour l'acces securise a distance au serveur Ubuntu (PuTTy).
-   - Port par defaut : 22
+7. **ssh (secure shell)** :
+   - version : ssh-2
+   - utilise pour l'acces securise a distance au serveur ubuntu (putty).
+   - port par defaut : 22
 
-8. **MSRDP (Microsoft Remote Desktop Protocol)** :
-   - Utilise pour l'acces a distance a la machine virtuelle Windows 11.
-   - Port par defaut : 3389
+8. **msrdp (microsoft remote desKtop protocol)** :
+   - utilise pour l'acces a distance a la machine virtuelle windows 11.
+   - port par defaut : 3389
 
-9. **DHCP (Dynamic Host Configuration Protocol)** :
-   - Utilise par pfSense pour attribuer des adresses IP aux machines du reseau interne.
-   - Plage d'adresses configuree : 10.10.10.100 - 10.10.10.199
+9. **dhcp (dynamic host configuration protocol)** :
+   - utilise par pfsense pour attribuer des adresses ip aux machines du reseau interne.
+   - plage d'adresses configuree : 10.10.10.100 - 10.10.10.199
 
-10. **NTP (Network Time Protocol)** :
-    - Utilise pour synchroniser l'horloge des differentes machines du reseau.
-    - Important pour la validite des certificats SSL/TLS et la coherence des logs.
+10. **Ntp (NetworK time protocol)** :
+    - utilise pour synchroniser l'horloge des differentes machines du reseau.
+    - important pour la validite des certificats ssl/tls et la coherence des logs.
 
-## Analyse approfondie du protocole HTTP
+## analyse approfondie du protocole http
 
-Le protocole HTTP est crucial pour notre application. Voici une analyse detaillee d'une requete HTTP du client a notre serveur apach :
+le protocole http est crucial pour notre application. voici une analyse detaillee d'une requete http du client a notre serveur apach :
 
-- **General**
-   - Request URL: http://tpiliesharrache.grasset/script.js
-   - Request Method: GET
-   - Status Code: 200 OK
-   - Remote Address: 192.168.20.107:80
-   - Referrer Policy: strict-origin-when-cross-origin
+- **general**
+   - request url: http://tpiliesharrache.grasset/script.js
+   - request method: get
+   - status code: 200 oK
+   - remote address: 192.168.20.107:80
+   - referrer policy: strict-origin-when-cross-origin
 
-- **Response Headers**
+- **response headers**
    - accept-ranges: bytes
-   - connection: Keep-Alive
+   - connection: Keep-alive
    - content-encoding: gzip
    - content-length: 561
    - content-type: text/javascript
-   - date: Tue, 17 Sep 2024 20:22:45 GMT
+   - date: tue, 17 sep 2024 20:22:45 gmt
    - etag: "4cb-6225649eaa7bb-gzip"
-   - keep-alive: timeout=5, max=100
-   - last-modified: Tue, 17 Sep 2024 20:11:02 GMT
-   - server: Apache/2.4.58 (Ubuntu)
-   - vary: Accept-Encoding
-- **Request Headers**
+   - Keep-alive: timeout=5, max=100
+   - last-modified: tue, 17 sep 2024 20:11:02 gmt
+   - server: apach/2.4.58 (ubuntu)
+   - vary: accept-encoding
+- **request headers**
    - accept: */*
    - accept-encoding: gzip, deflate
-   - accept-language: fr-FR,fr;q=0.9,en-US;q=0.8,en;q=0.7
+   - accept-language: fr-fr,fr;q=0.9,en-us;q=0.8,en;q=0.7
    - cache-control:
    - no-cache
-   - connection: keep-alive
+   - connection: Keep-alive
    - host: tpiliesharrache.grasset
    - pragma: no-cache
    - referer: http://tpiliesharrache.grasset/
-   - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36
+   - user-agent: mozilla/5.0 (windows Nt 10.0; win64; x64) applewebKit/537.36 (Khtml, liKe gecKo) chrome/128.0.0.0 safari/537.36
   
 
-Cette requete HTTP est une demande **GET** pour recuperer un fichier JavaScript a l'URL `http://tpiliesharrache.grasset/script.js`. Le **code de statut 200 OK** indique que la demande a reussi et le fichier a ete renvoye avec succes. L'adresse distante montre que la reponse vient de pfsense `192.168.20.107` sur le port 80, ce qui suggere une communication HTTP classique.
+cette requete http est une demande **get** pour recuperer un fichier javascript a l'url `http://tpiliesharrache.grasset/script.js`. le **code de statut 200 oK** indique que la demande a reussi et le fichier a ete renvoye avec succes. l'adresse distante montre que la reponse vient de pfsense `192.168.20.107` sur le port 80, ce qui suggere une communication http classique.
 
-Les en-tetes de reponse incluent beaucoup de informations une de cest informations comme :
-- **content-type**: le fichier est du JavaScript (`text/javascript`).
+les en-tetes de reponse incluent beaucoup de informations une de cest informations comme :
+- **content-type**: le fichier est du javascript (`text/javascript`).
 - **content-encoding**: la reponse est compressee en **gzip**.
 - **content-length**: la taille du fichier compresse est de 561 octets.
-- Le serveur utilise est **Apache/2.4.58** tournant sur notre Ubuntu UM.
+- le serveur utilise est **apach/2.4.58** tournant sur notre ubuntu um.
 
-Les en-tetes de requete montrent que le navigateur accepte differents formats de reponse et utilise une politique de cache stricte (`no-cache`) pour s'assurer que le fichier demande est toujours a jour. Le client est un navigateur Chrome recent.
+les en-tetes de requete montrent que le navigateur accepte differents formats de reponse et utilise une politique de cache stricte (`no-cache`) pour s'assurer que le fichier demande est toujours a jour. le client est un navigateur chrome recent.
 
-[ TODO!: capture Wireshark ]
+[ todo!: capture wiresharK ]
 
-### Modifications de l'application pour le stockage local et l'acces hors ligne
+### modifications de l'application pour le stocKage local et l'acces hors ligne
 
-## 1. Ajout de la fonctionnalite de stockage local
+## 1. ajout de la fonctionnalite de stocKage local
 
-Nous allons utiliser IndexedDB pour stocker les donnees de l'API et le logo localement:
+Nous allons utiliser indexeddb pour stocKer les donnees de l'api et le logo localement:
 
 ```javascript
 let db;
-const dbName = "GhibliDB";
+const dbName = "ghiblidb";
 const storeName = "films";
-const logoStoreName = "logo";
+const logostoreName = "logo";
 
-// Fonction pour initialiser la base de donnees
-function initDB() {
-  const request = indexedDB.open(dbName, 1);
+// fonction pour initialiser la base de donnees
+function initdb() {
+  const request = indexeddb.open(dbName, 1);
   
   request.onerror = function(event) {
-    console.error("Erreur d'ouverture de la base de donnees");
+    console.error("erreur d'ouverture de la base de donnees");
   };
 
   request.onsuccess = function(event) {
     db = event.target.result;
-    loadData();
+    loaddata();
   };
 
   request.onupgradeneeded = function(event) {
     db = event.target.result;
-    db.createObjectStore(storeName, { keyPath: "id" });
-    db.createObjectStore(logoStoreName, { keyPath: "id" });
+    db.createobjectstore(storeName, { Keypath: "id" });
+    db.createobjectstore(logostoreName, { Keypath: "id" });
   };
 }
 
-// Fonction pour charger les donnees
-function loadData() {
-  getLogoFromDB();
-  getFilmsFromDB();
+// fonction pour charger les donnees
+function loaddata() {
+  getlogofromdb();
+  getfilmsfromdb();
 }
 
-// Fonction pour recuperer le logo de la base de donnees
-function getLogoFromDB() {
-  const transaction = db.transaction([logoStoreName], "readonly");
-  const objectStore = transaction.objectStore(logoStoreName);
-  const request = objectStore.get("logo");
+// fonction pour recuperer le logo de la base de donnees
+function getlogofromdb() {
+  const transaction = db.transaction([logostoreName], "readonly");
+  const objectstore = transaction.objectstore(logostoreName);
+  const request = objectstore.get("logo");
 
   request.onerror = function(event) {
-    console.error("Erreur de recuperation du logo");
+    console.error("erreur de recuperation du logo");
   };
 
   request.onsuccess = function(event) {
     if (request.result) {
-      displayLogo(request.result.src);
+      displaylogo(request.result.src);
     } else {
-      fetchAndStoreLogo();
+      fetchandstorelogo();
     }
   };
 }
 
-// Fonction pour recuperer et stocker le logo
-function fetchAndStoreLogo() {
+// fonction pour recuperer et stocKer le logo
+function fetchandstorelogo() {
   fetch('https://taniarascia.github.io/sandbox/ghibli/logo.png')
     .then(response => response.blob())
     .then(blob => {
-      const reader = new FileReader();
+      const reader = new filereader();
       reader.onloadend = function() {
-        const logoData = { id: "logo", src: reader.result };
-        storeLogo(logoData);
-        displayLogo(reader.result);
+        const logodata = { id: "logo", src: reader.result };
+        storelogo(logodata);
+        displaylogo(reader.result);
       }
-      reader.readAsDataURL(blob);
+      reader.readasdataurl(blob);
     })
-    .catch(error => console.error('Erreur de recuperation du logo:', error));
+    .catch(error => console.error('erreur de recuperation du logo:', error));
 }
 
-// Fonction pour stocker le logo dans IndexedDB
-function storeLogo(logoData) {
-  const transaction = db.transaction([logoStoreName], "readwrite");
-  const objectStore = transaction.objectStore(logoStoreName);
-  const request = objectStore.put(logoData);
+// fonction pour stocKer le logo dans indexeddb
+function storelogo(logodata) {
+  const transaction = db.transaction([logostoreName], "readwrite");
+  const objectstore = transaction.objectstore(logostoreName);
+  const request = objectstore.put(logodata);
 
   request.onerror = function(event) {
-    console.error("Erreur de stockage du logo");
+    console.error("erreur de stocKage du logo");
   };
 }
 
-// Fonction pour afficher le logo
-function displayLogo(src) {
-  const logo = document.createElement('img');
+// fonction pour afficher le logo
+function displaylogo(src) {
+  const logo = document.createelement('img');
   logo.src = src;
-  document.getElementById('root').appendChild(logo);
+  document.getelementbyid('root').appendchild(logo);
 }
 
-// Fonction pour recuperer les films de la base de donnees
-function getFilmsFromDB() {
+// fonction pour recuperer les films de la base de donnees
+function getfilmsfromdb() {
   const transaction = db.transaction([storeName], "readonly");
-  const objectStore = transaction.objectStore(storeName);
-  const request = objectStore.getAll();
+  const objectstore = transaction.objectstore(storeName);
+  const request = objectstore.getall();
 
   request.onerror = function(event) {
-    console.error("Erreur de recuperation des films");
+    console.error("erreur de recuperation des films");
   };
 
   request.onsuccess = function(event) {
     if (request.result.length > 0) {
-      displayFilms(request.result);
+      displayfilms(request.result);
     } else {
-      fetchAndStoreFilms();
+      fetchandstorefilms();
     }
   };
 }
 
-// Fonction pour recuperer et stocker les films
-function fetchAndStoreFilms() {
+// fonction pour recuperer et stocKer les films
+function fetchandstorefilms() {
   fetch('https://ghibliapi.vercel.app/films')
     .then(response => response.json())
     .then(data => {
-      storeFilms(data);
-      displayFilms(data);
+      storefilms(data);
+      displayfilms(data);
     })
     .catch(error => {
-      console.error('Erreur de recuperation des films:', error);
-      displayErrorMessage();
+      console.error('erreur de recuperation des films:', error);
+      displayerrormessage();
     });
 }
 
-// Fonction pour stocker les films dans IndexedDB
-function storeFilms(films) {
+// fonction pour stocKer les films dans indexeddb
+function storefilms(films) {
   const transaction = db.transaction([storeName], "readwrite");
-  const objectStore = transaction.objectStore(storeName);
+  const objectstore = transaction.objectstore(storeName);
   
-  films.forEach(film => {
-    const request = objectStore.put(film);
+  films.foreach(film => {
+    const request = objectstore.put(film);
     request.onerror = function(event) {
-      console.error("Erreur de stockage du film");
+      console.error("erreur de stocKage du film");
     };
   });
 }
 
-// Fonction pour afficher les films
-function displayFilms(films) {
-  const container = document.createElement('div');
-  container.setAttribute('class', 'container');
+// fonction pour afficher les films
+function displayfilms(films) {
+  const container = document.createelement('div');
+  container.setattribute('class', 'container');
 
-  films.forEach(movie => {
-    const card = document.createElement('div');
-    card.setAttribute('class', 'card');
+  films.foreach(movie => {
+    const card = document.createelement('div');
+    card.setattribute('class', 'card');
 
-    const h1 = document.createElement('h1');
-    h1.textContent = movie.title;
+    const h1 = document.createelement('h1');
+    h1.textcontent = movie.title;
 
-    const p = document.createElement('p');
+    const p = document.createelement('p');
     movie.description = movie.description.substring(0, 300);
-    p.textContent = `${movie.description}...`;
+    p.textcontent = `${movie.description}...`;
 
-    container.appendChild(card);
-    card.appendChild(h1);
-    card.appendChild(p);
+    container.appendchild(card);
+    card.appendchild(h1);
+    card.appendchild(p);
   });
 
-  document.getElementById('root').appendChild(container);
+  document.getelementbyid('root').appendchild(container);
 }
 
-// Fonction pour afficher un message d'erreur
-function displayErrorMessage() {
-  const errorMessage = document.createElement('marquee');
-  errorMessage.textContent = `Une erreur est survenue`;
-  document.getElementById('root').appendChild(errorMessage);
+// fonction pour afficher un message d'erreur
+function displayerrormessage() {
+  const errormessage = document.createelement('marquee');
+  errormessage.textcontent = `une erreur est survenue`;
+  document.getelementbyid('root').appendchild(errormessage);
 }
 
-// Initialiser la base de donnees au chargement de la page
-initDB();
+// initialiser la base de donnees au chargement de la page
+initdb();
 
 ```
 
    
- - Nous avons ajoute une base de donnees locale pour stocker les films et le logo.
+ - Nous avons ajoute une base de donnees locale pour stocKer les films et le logo.
      
-- Les films sont d'abord recherches dans la base de donnees locale.
-S'ils ne sont pas presents, l'application tente de les recuperer depuis l'API et les stocke localement.
+- les films sont d'abord recherches dans la base de donnees locale.
+s'ils ne sont pas presents, l'application tente de les recuperer depuis l'api et les stocKe localement.
 
 
 ![93](https://github.com/user-attachments/assets/6b0b2c43-1d0a-4c11-a2f2-18b1aeafdaa1)
@@ -1092,16 +1092,16 @@ S'ils ne sont pas presents, l'application tente de les recuperer depuis l'API et
 ![92](https://github.com/user-attachments/assets/6475ef32-813a-47fc-8046-3538333990ca)
 
 
-## 2.  pourquoi cette modification? (Avantages de cette modification)
+## 2.  pourquoi cette modification? (avantages de cette modification)
 
-   - L'application fonctionne meme sans connexion Internet une fois les donnees chargees.
-   - Les temps de chargement sont reduits apres la premiere visite.
-   - Les donnees ne sont telechargees qu'une seule fois.
+   - l'application fonctionne meme sans connexion internet une fois les donnees chargees.
+   - les temps de chargement sont reduits apres la premiere visite.
+   - les donnees ne sont telechargees qu'une seule fois.
 
 
-## Appendix
+## appendix
 
-### Commands Utuliser
+### commands utuliser
 
 ```bash
 sudo apt update
@@ -1114,19 +1114,19 @@ ipconfig /renew
 sudo apt install dhclient
 sudo dhclient -v -r
 sudo dhclient -v
-sudo apt install apache2 mariadb-server php
-sudo systemctl status apache2
+sudo apt install apach2 mariadb-server php
+sudo systemctl status apach2
 sudo systemctl status mariadb
 php -v
 wget localhost
-sudo mkdir -p /var/www/tpiliesharrache/public_html
+sudo mKdir -p /var/www/tpiliesharrache/public_html
 cd /var/www/tpiliesharrache/public_html
 sudo vim index.html
 sudo vim script.js
 sudo vim style.css
-sudo cp /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/tpiliesharrache.conf
-sudo vim /etc/apache2/sites-available/tpiliesharrache.conf
+sudo cp /etc/apach2/sites-available/000-default.conf /etc/apach2/sites-available/tpiliesharrache.conf
+sudo vim /etc/apach2/sites-available/tpiliesharrache.conf
 sudo a2ensite tpiliesharrache.conf
-sudo systemctl reload apache2
+sudo systemctl reload apach2
 ```
 
