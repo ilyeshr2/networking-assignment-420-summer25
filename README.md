@@ -1072,34 +1072,13 @@ function displayErrorMessage() {
 initDB();
 
 ```
-## 2. Modifications apportees
 
-1. **Utilisation d'IndexedDB :**
    
-   - Nous avons ajoute une base de donnees locale pour stocker les films et le logo.
+ - Nous avons ajoute une base de donnees locale pour stocker les films et le logo.
      
-2. **Gestion du logo :**
-
-   - Le logo est maintenant recupere depuis la base de donnees locale s'il existe.
-Si le logo n'est pas en cache, il est telecharge, stocke dans IndexedDB, puis affiche.
-
-
-3. **Gestion des films :**
-
-   - Les films sont d'abord recherches dans la base de donnees locale.
+- Les films sont d'abord recherches dans la base de donnees locale.
 S'ils ne sont pas presents, l'application tente de les recuperer depuis l'API et les stocke localement.
 
-
-4. **Fonctionnement hors ligne :**
-
-   - Si l'application ne peut pas se connecter a l'API, elle utilisera les donnees stockees localement.
-Un message d'erreur s'affiche uniquement si aucune donnee n'est disponible localement et que l'API est inaccessible.
-
-
-5. **Optimisation des performances :**
-
-   - Les donnees sont chargees une seule fois depuis l'API, puis stockees localement.
-Les chargements ulterieurs seront plus rapides car les donnees seront recuperees depuis IndexedDB.
 
 ![93](https://github.com/user-attachments/assets/6b0b2c43-1d0a-4c11-a2f2-18b1aeafdaa1)
 
@@ -1115,9 +1094,9 @@ Les chargements ulterieurs seront plus rapides car les donnees seront recuperees
 
 ## 2.  pourquoi cette modification? (Avantages de cette modification)
 
-   - **Resilience :** L'application fonctionne meme sans connexion Internet une fois les donnees chargees.
-   - **Performance :** Les temps de chargement sont reduits apres la premiere visite.
-   - **economie de bande passante :** Les donnees ne sont telechargees qu'une seule fois.
+   - L'application fonctionne meme sans connexion Internet une fois les donnees chargees.
+   - Les temps de chargement sont reduits apres la premiere visite.
+   - Les donnees ne sont telechargees qu'une seule fois.
 
 
 ## Appendix
