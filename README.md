@@ -401,7 +401,7 @@ Pour ameliorer la securite, l'interface Web pfSense a ete securisee a l'aide de 
 
 1. **Acceder a l'interface Web de pfSense:**
    - Acceder a `http://10.10.10.1`.
-   - Connection avec les identifiants d'administrateur (`admin`, `pfsense`).
+   - Connection avec  (`admin`, `pfsense`).
 
 2. **Acceder aux certificats:**
    - Aller a `System` > `Cert. Manager` > `CAs`.
@@ -502,7 +502,7 @@ Pour chiffrer le trafic vers l'interface web pfSense et ameliorer la securite on
 
 1. **Acceder a l'interface Web de pfSense:**
    - Acceder a `http://10.10.10.1`.
-   - Connection avec les identifiants d'administrateur (`admin`, `pfsense`).
+   - Connection avec  (`admin`, `pfsense`).
 
 2. **Accedez aux parametres WebConfigurator:**
    - allez a `System` > `Advanced` > `Admin Access`.
