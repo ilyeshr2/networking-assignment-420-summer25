@@ -1,5 +1,5 @@
 
-# NetworKing assignment report
+# Networking assignment report
 
 # table des matieres
 
@@ -24,7 +24,7 @@
    - [configuration https pour pfsense](#configuration-https-pour-pfsense)
    - [mise a jour du fichier hosts de windows](#mise-a-jour-du-fichier-hosts-de-windows)
 8. [configuration du serveur web](#configuration-du-serveur-web)
-   - [installation du lamp stacK](#installation-du-lamp-stacK)
+   - [installation du lamp stack](#installation-du-lamp-stack)
    - [configuration d'apach pour le site web](#configuration-dapach-pour-le-site-web)
    - [tester le serveur web](#tester-le-serveur-web)
 9. [test final et verification](#test-final-et-verification)
@@ -34,8 +34,8 @@
 11. [protocoles utilises](#protocoles-utilises)
 
 11. [analyse approfondie du protocole http](#analyse-approfondie-du-protocole-http)
-11. [modifications de l'application pour le stocKage local et l'acces hors ligne](#modifications-de-lapplication-pour-le-stocKage-local-et-lacces-hors-ligne)
-      - [ajout de la fonctionnalite de stocKage local](#ajout-de-la-fonctionnalite-de-stocKage-local)
+11. [modifications de l'application pour le stockage local et l'acces hors ligne](#modifications-de-lapplication-pour-le-stockage-local-et-lacces-hors-ligne)
+      - [ajout de la fonctionnalite de stockage local](#ajout-de-la-fonctionnalite-de-stockage-local)
       - [modifications apportees](#modifications-apportees)
       - [pourquoi cette modification? (avantages de cette modification)](#pourquoi-cette-modification?-(avantages-de-cette-modification))
 
@@ -50,15 +50,15 @@ dans ce rapport on va cree un reseau local securise a laide de virtualbox, pfsen
 
 ## prerequis
 
-- une machine physique avec des ressources suffisantes (ram, cpu, stocKage) pour heberger plusieurs machines virtuelles.
-- une connexion internet stable pour telecharger les logiciels et les pacKages logiciels.
+- une machine physique avec des ressources suffisantes (ram, cpu, stockage) pour heberger plusieurs machines virtuelles.
+- une connexion internet stable pour telecharger les logiciels et les packages logiciels.
 
 ## configuration de l'environnement virtuel
 
 ### installation de virtualbox
 
 1. **telecharger virtualbox:**
-   - acceder a la page [virtualbox downloads](https://www.virtualbox.org/wiKi/downloads)
+   - acceder a la page [virtualbox downloads](https://www.virtualbox.org/wiki/downloads)
    - selectionnez la version appropriee pour notre systeme dexploitation (windows dans mon cas).
 
 2. **install virtualbox:**
@@ -73,7 +73,7 @@ on va cree deux machine virtuelles: **ubuntu server** et **windows 11**.
 #### vm ubuntu server
 
 1. **initiate une nouvelle vm:**
-   - dans virtualbox, on clicK sur le bouton  `Nouveau` .
+   - dans virtualbox, on click sur le bouton  `Nouveau` .
 
 2. **Nom et systeme dexploitation:**
    - **Nom:** ubuntu_server
@@ -82,7 +82,7 @@ on va cree deux machine virtuelles: **ubuntu server** et **windows 11**.
      c:\users\2417034\virtualbox vms
      ```
    - **iso image:** on selection l'image iso que on a telecharger du site official de ubuntu [ubuntu server](https://ubuntu.com/download/server).
-   - et on selectione 'sKip unattended installation' pour que on install le guest os manuellement. 
+   - et on selectione 'skip unattended installation' pour que on install le guest os manuellement. 
 
 3. **allocation de resources:**
    - 2 processeurs
@@ -90,7 +90,7 @@ on va cree deux machine virtuelles: **ubuntu server** et **windows 11**.
    - 30go de disque
 
 5. **finaliser:**
-   - clicK `create`.
+   - click `create`.
 
 6. **install ubuntu server:**
    - on demarre la vm et on suit les invites dinstallation de ubuntu.
@@ -109,7 +109,7 @@ on va cree deux machine virtuelles: **ubuntu server** et **windows 11**.
      c:\users\2417034\virtualbox vms
      ```
    - **iso image:** on selection l'image iso que on a telecharger du site  [institutgrassetinfo](http://reseaux.institutgrassetinfo.com/windows\_11\_enterprise\_edition\_22h2\_x64.iso).
-   - et on selectione 'sKip unattended installation' pour que on insrtall le guest os manuellement. 
+   - et on selectione 'skip unattended installation' pour que on insrtall le guest os manuellement. 
 
 3. **allocation de resources:**
    - 2 processeurs
@@ -117,7 +117,7 @@ on va cree deux machine virtuelles: **ubuntu server** et **windows 11**.
    - 60go de disque
 
 5. **finaliser:**
-   - clicK `create`.
+   - click `create`.
 
 6. **install windows 11:**
    - demarre la vm et suivere les invites dinstallation dans le document windows11_installation du cours system d'exploitation.
@@ -140,7 +140,7 @@ les machines virtuelles ubuntu server et windows 11 sont initialement configuree
      - **Nome:** ih
 
 4. **apply changes:**
-   - cliquez sur `oK` pour enregistrer les parametres.
+   - cliquez sur `ok` pour enregistrer les parametres.
   
    - ![13](https://github.com/user-attachments/assets/62043379-ee97-46f3-83ff-f023b413e6e5)
      
@@ -201,7 +201,7 @@ pour cree un reseau `prive isole` dautres reseaux `externes`.
 
 
 7. **finaliser:**
-   - clicK `create`.
+   - click `create`.
 
 8. **install pfsense:**
    - demarre la vm et suivez les invites d’installation de pfsense.
@@ -293,7 +293,7 @@ il faut fournire des adresses ip fixes pour les machines virtuelles.
 
 
 3. **ajouter un mappage statique:**
-   - clicK sur `add static mapping`
+   - click sur `add static mapping`
      
    - ![23](https://github.com/user-attachments/assets/c9b72bbf-bce0-43d7-9afd-908eeb0bfdcd)
 
@@ -410,15 +410,15 @@ pour ameliorer la securite, l'interface web pfsense a ete securisee a l'aide de 
 
 
 3. **creer une autorite de certification racine (ca):**
-   - clicK `add`.
+   - click `add`.
    - **descriptive Name:** `ih_autorite_de_certification`
    - **method:** create an internal certificate authority.
-   - **Key type:** rsa
-   - **Key length:** 2048 bits.
+   - **key type:** rsa
+   - **key length:** 2048 bits.
    - **digest algorithm:** sha256.
    - **lifetime (days):** 3650
    - **common Name:** `ih_autorite_de_certification`.
-   - clicK `save`.
+   - click `save`.
      
    - ![42](https://github.com/user-attachments/assets/5f7ce05b-466f-476d-9113-46ee1c12ff85)
      
@@ -428,12 +428,12 @@ pour ameliorer la securite, l'interface web pfsense a ete securisee a l'aide de 
 
 4. **creer une autorite de certification intermediaire:**
    - aller a `system` > `cert. manager` > `certificates`.
-   - clicK `add`.
+   - click `add`.
    - **descriptive Name:** `ih_autorite_intermediaire_de_certification`.
    - **method:** create an intermediate certificate authority.
    - **signing ca:** selectioner `ih_autorite_de_certification`.
-   - **Key type:** rsa
-   - **Key length:** 2048 bits.
+   - **key type:** rsa
+   - **key length:** 2048 bits.
    - **digest algorithm:** sha256.
    - **lifetime:** default (3650).
    - **common Name:** `ih_autorite_intermediaire_de_certification`.
@@ -444,20 +444,20 @@ pour ameliorer la securite, l'interface web pfsense a ete securisee a l'aide de 
 
 
    
-   - clicK `save`.
+   - click `save`.
 
 5. **creer un certificat de serveur:**
    - aller a `system` > `cert. manager` > `certificates`.
-   - clicK `add`.
+   - click `add`.
    - **descriptive Name:** `pfsenseih.grasset`.
    - **method:** create an internal certificate.
    - **certificate authority:** selectioner `ih_autorite_intermediaire_de_certification`.
-   - **Key type:** rsa
-   - **Key length:** 2048 bits.
+   - **key type:** rsa
+   - **key length:** 2048 bits.
    - **digest algorithm:** sha256.
    - **common Name:** `pfsenseih.grasset`.
    - **lifetime:** default (3650).
-   - clicK `save`.
+   - click `save`.
      
    - ![46](https://github.com/user-attachments/assets/113a80d8-3e06-4c58-9475-6b09cf2ae48a)
      
@@ -474,7 +474,7 @@ pour ameliorer la securite, l'interface web pfsense a ete securisee a l'aide de 
 pour que windows fasse confiance aux certificats auto-signes il faut les importee a windows
 1. **exporter le certificat d'autorite de certification racine:**
    - dans pfsense, alle a `system` > `cert. manager` > `cas`.
-   - clicK `export` button pres de `ih_autorite_de_certification`.
+   - click `export` button pres de `ih_autorite_de_certification`.
    - enregistrer le fichier de certificat ( `ih_autorite_de_certification.pem`).
      
    - ![49](https://github.com/user-attachments/assets/f2969c98-cd2b-4ab6-8d31-8cc4219f4d3f)
@@ -485,9 +485,9 @@ pour que windows fasse confiance aux certificats auto-signes il faut les importe
      - appuyer sur `win + r`, tapez `mmc`, et appuyer `entree`.
    - ajoutez le snap-in du certificates :
      - allez a `fichier` > `ajouter/suprimer un composant logiciel enfichable...`.
-     - selectioner `certificates` et clicK `add`.
+     - selectioner `certificates` et click `add`.
    - acceder a `trusted root certification authorities` > `certificates`.
-   - clic droit et selectionnez `all tasKs` > `import`.
+   - clic droit et selectionnez `all tasks` > `import`.
    - select `ih_autorite_de_certification.pem`.
    - confirmez que le certificat est repertorie sous `trusted root certification authorities`.
      
@@ -518,10 +518,10 @@ pour chiffrer le trafic vers l'interface web pfsense et ameliorer la securite on
 
 
 4. **autres parametres:**
-   - **enable webconfigurator login autocomplete:** `checKed`.
-   - **allow gui administrator client ip address to change during a login session:** `checKed`.
-   - **disable dNs rebinding checKs:** `checKed`.
-   - **disable http_referer enforcement checK:** `checKed`.
+   - **enable webconfigurator login autocomplete:** `checked`.
+   - **allow gui administrator client ip address to change during a login session:** `checked`.
+   - **disable dNs rebinding checks:** `checked`.
+   - **disable http_referer enforcement check:** `checked`.
      
    - ![52](https://github.com/user-attachments/assets/45f5f20f-bd1c-45a8-b61f-3d99d932d18c)
      
@@ -530,7 +530,7 @@ pour chiffrer le trafic vers l'interface web pfsense et ameliorer la securite on
 
 
 5. **enregistrer et appliquer:**
-   - clicK `save` pour appliquer les parametres.
+   - click `save` pour appliquer les parametres.
 
 maintenant que l'interface webconfigurator est securise, on est proteger contre les ecoutes clandestines (eavesdropping) et les attaques de l'homme du milieu (man-in-the-middle).
 
@@ -545,7 +545,7 @@ maintenant que l'interface webconfigurator est securise, on est proteger contre 
      
    - ![55](https://github.com/user-attachments/assets/c41044d1-e508-4f70-9d51-f76ac61abdab)
      
-   - right-clicK sur `hosts` et selectionnez `ouvrir avec le bloc-notes` (executer le bloc-notes en tant qu’administrateur).
+   - right-click sur `hosts` et selectionnez `ouvrir avec le bloc-notes` (executer le bloc-notes en tant qu’administrateur).
 
 2. **ajouter pfsense host entry:**
    - ajoutez la ligne suivante:
@@ -569,13 +569,13 @@ maintenant nous avons simplifie l'acces en autorisant l'utilisation d'un nom d'h
 
 ## configuration du serveur web
 
-### installation du lamp stacK (linux, apach, mysql, php)
+### installation du lamp stack (linux, apach, mysql, php)
 
 1. **acceder au serveur ubuntu:**
    - ouvrire putty.
    - entrez ladress waN de pfsense.
 
-2. **mettre a jour les pacKage lists:**
+2. **mettre a jour les package lists:**
    ```bash
    sudo apt update
    sudo apt upgrade
@@ -629,7 +629,7 @@ maintenant nous avons simplifie l'acces en autorisant l'utilisation d'un nom d'h
 
 2. **creer une structure de repertoire de site web:**
    ```bash
-   sudo mKdir -p /var/www/tpiliesharrache/public_html
+   sudo mkdir -p /var/www/tpiliesharrache/public_html
    ```
 3. **creer des fichiers de site web:**
    - acceder au repertoire du site web:
@@ -739,7 +739,7 @@ maintenant, nous dirigeons le domaine `tpiliesharrache.grasset` vers l'ip waN pf
 1. **ssh a ubuntu server:**
      - ouvrir puttY sur windows 10 (physique).
      - connect a `192.168.20.107` via ssh.
-2. **msrdp remote desKtop a windows 10:**
+2. **msrdp remote desktop a windows 10:**
      - utilisez la connexion bureau a distance sur windows physique .
      - connect a `192.168.20.107`.
 3.  **http:** 
@@ -840,7 +840,7 @@ le flux de trafic reseau est le suivant :
    - utilise pour l'acces securise a distance au serveur ubuntu (putty).
    - port par defaut : 22
 
-8. **msrdp (microsoft remote desKtop protocol)** :
+8. **msrdp (microsoft remote desktop protocol)** :
    - utilise pour l'acces a distance a la machine virtuelle windows 11.
    - port par defaut : 3389
 
@@ -848,7 +848,7 @@ le flux de trafic reseau est le suivant :
    - utilise par pfsense pour attribuer des adresses ip aux machines du reseau interne.
    - plage d'adresses configuree : 10.10.10.100 - 10.10.10.199
 
-10. **Ntp (NetworK time protocol)** :
+10. **Ntp (Network time protocol)** :
     - utilise pour synchroniser l'horloge des differentes machines du reseau.
     - important pour la validite des certificats ssl/tls et la coherence des logs.
 
@@ -859,19 +859,19 @@ le protocole http est crucial pour notre application. voici une analyse detaille
 - **general**
    - request url: http://tpiliesharrache.grasset/script.js
    - request method: get
-   - status code: 200 oK
+   - status code: 200 ok
    - remote address: 192.168.20.107:80
    - referrer policy: strict-origin-when-cross-origin
 
 - **response headers**
    - accept-ranges: bytes
-   - connection: Keep-alive
+   - connection: keep-alive
    - content-encoding: gzip
    - content-length: 561
    - content-type: text/javascript
    - date: tue, 17 sep 2024 20:22:45 gmt
    - etag: "4cb-6225649eaa7bb-gzip"
-   - Keep-alive: timeout=5, max=100
+   - keep-alive: timeout=5, max=100
    - last-modified: tue, 17 sep 2024 20:11:02 gmt
    - server: apach/2.4.58 (ubuntu)
    - vary: accept-encoding
@@ -881,14 +881,14 @@ le protocole http est crucial pour notre application. voici une analyse detaille
    - accept-language: fr-fr,fr;q=0.9,en-us;q=0.8,en;q=0.7
    - cache-control:
    - no-cache
-   - connection: Keep-alive
+   - connection: keep-alive
    - host: tpiliesharrache.grasset
    - pragma: no-cache
    - referer: http://tpiliesharrache.grasset/
-   - user-agent: mozilla/5.0 (windows Nt 10.0; win64; x64) applewebKit/537.36 (Khtml, liKe gecKo) chrome/128.0.0.0 safari/537.36
+   - user-agent: mozilla/5.0 (windows Nt 10.0; win64; x64) applewebkit/537.36 (khtml, like gecko) chrome/128.0.0.0 safari/537.36
   
 
-cette requete http est une demande **get** pour recuperer un fichier javascript a l'url `http://tpiliesharrache.grasset/script.js`. le **code de statut 200 oK** indique que la demande a reussi et le fichier a ete renvoye avec succes. l'adresse distante montre que la reponse vient de pfsense `192.168.20.107` sur le port 80, ce qui suggere une communication http classique.
+cette requete http est une demande **get** pour recuperer un fichier javascript a l'url `http://tpiliesharrache.grasset/script.js`. le **code de statut 200 ok** indique que la demande a reussi et le fichier a ete renvoye avec succes. l'adresse distante montre que la reponse vient de pfsense `192.168.20.107` sur le port 80, ce qui suggere une communication http classique.
 
 les en-tetes de reponse incluent beaucoup de informations une de cest informations comme :
 - **content-type**: le fichier est du javascript (`text/javascript`).
@@ -898,13 +898,13 @@ les en-tetes de reponse incluent beaucoup de informations une de cest informatio
 
 les en-tetes de requete montrent que le navigateur accepte differents formats de reponse et utilise une politique de cache stricte (`no-cache`) pour s'assurer que le fichier demande est toujours a jour. le client est un navigateur chrome recent.
 
-[ todo!: capture wiresharK ]
+[ todo!: capture wireshark ]
 
-### modifications de l'application pour le stocKage local et l'acces hors ligne
+### modifications de l'application pour le stockage local et l'acces hors ligne
 
-## 1. ajout de la fonctionnalite de stocKage local
+## 1. ajout de la fonctionnalite de stockage local
 
-Nous allons utiliser indexeddb pour stocKer les donnees de l'api et le logo localement:
+Nous allons utiliser indexeddb pour stocker les donnees de l'api et le logo localement:
 
 ```javascript
 let db;
@@ -927,8 +927,8 @@ function initdb() {
 
   request.onupgradeneeded = function(event) {
     db = event.target.result;
-    db.createobjectstore(storeName, { Keypath: "id" });
-    db.createobjectstore(logostoreName, { Keypath: "id" });
+    db.createobjectstore(storeName, { keypath: "id" });
+    db.createobjectstore(logostoreName, { keypath: "id" });
   };
 }
 
@@ -957,7 +957,7 @@ function getlogofromdb() {
   };
 }
 
-// fonction pour recuperer et stocKer le logo
+// fonction pour recuperer et stocker le logo
 function fetchandstorelogo() {
   fetch('https://taniarascia.github.io/sandbox/ghibli/logo.png')
     .then(response => response.blob())
@@ -973,14 +973,14 @@ function fetchandstorelogo() {
     .catch(error => console.error('erreur de recuperation du logo:', error));
 }
 
-// fonction pour stocKer le logo dans indexeddb
+// fonction pour stocker le logo dans indexeddb
 function storelogo(logodata) {
   const transaction = db.transaction([logostoreName], "readwrite");
   const objectstore = transaction.objectstore(logostoreName);
   const request = objectstore.put(logodata);
 
   request.onerror = function(event) {
-    console.error("erreur de stocKage du logo");
+    console.error("erreur de stockage du logo");
   };
 }
 
@@ -1010,7 +1010,7 @@ function getfilmsfromdb() {
   };
 }
 
-// fonction pour recuperer et stocKer les films
+// fonction pour recuperer et stocker les films
 function fetchandstorefilms() {
   fetch('https://ghibliapi.vercel.app/films')
     .then(response => response.json())
@@ -1024,7 +1024,7 @@ function fetchandstorefilms() {
     });
 }
 
-// fonction pour stocKer les films dans indexeddb
+// fonction pour stocker les films dans indexeddb
 function storefilms(films) {
   const transaction = db.transaction([storeName], "readwrite");
   const objectstore = transaction.objectstore(storeName);
@@ -1032,7 +1032,7 @@ function storefilms(films) {
   films.foreach(film => {
     const request = objectstore.put(film);
     request.onerror = function(event) {
-      console.error("erreur de stocKage du film");
+      console.error("erreur de stockage du film");
     };
   });
 }
@@ -1074,10 +1074,10 @@ initdb();
 ```
 
    
- - Nous avons ajoute une base de donnees locale pour stocKer les films et le logo.
+ - Nous avons ajoute une base de donnees locale pour stocker les films et le logo.
      
 - les films sont d'abord recherches dans la base de donnees locale.
-s'ils ne sont pas presents, l'application tente de les recuperer depuis l'api et les stocKe localement.
+s'ils ne sont pas presents, l'application tente de les recuperer depuis l'api et les stocke localement.
 
 
 ![93](https://github.com/user-attachments/assets/6b0b2c43-1d0a-4c11-a2f2-18b1aeafdaa1)
@@ -1119,7 +1119,7 @@ sudo systemctl status apach2
 sudo systemctl status mariadb
 php -v
 wget localhost
-sudo mKdir -p /var/www/tpiliesharrache/public_html
+sudo mkdir -p /var/www/tpiliesharrache/public_html
 cd /var/www/tpiliesharrache/public_html
 sudo vim index.html
 sudo vim script.js
