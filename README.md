@@ -904,7 +904,7 @@ Les en-tetes de requete montrent que le navigateur accepte differents formats de
 
 ## 1. Ajout de la fonctionnalite de stockage local
 
-Nous allons utiliser IndexedDB pour stocker les donnees de l'API et le logo localement.:
+Nous allons utiliser IndexedDB pour stocker les donnees de l'API et le logo localement:
 
 ```javascript
 let db;
