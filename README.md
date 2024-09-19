@@ -789,7 +789,8 @@ le flux de trafic reseau est le suivant :
 
 ### schema reseau
 
-![102](https://github.com/user-attachments/assets/bcbee948-4f26-4444-87d4-fbc2bb2c2693)
+![schema](https://github.com/user-attachments/assets/aa4dee6a-ec68-4215-a216-caa3498221b6)
+
 
 
 ### protocoles utilises 
