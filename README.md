@@ -380,7 +380,7 @@ Pour permettre l'acces web a l'Ubuntu Server on doit ouvrire le port `80` (`HTTp
         - ![37](https://github.com/user-attachments/assets/d8e800c9-86e0-4da5-8b8f-11bd3aef0bfa)
 
     - **Ouverture du Port HTTP:**
-Pour permettre l'acces bureau a distance a la VM Windows 11 on doit ouvrire le port `3390` (`MSRDP`)
+Pour permettre l'acces bureau a distance a la VM Windows 11 on doit ouvrire le port `3389` (`MSRDP`)
         - Repetition des etapes, mais pour le port MSRDP et ciblant 10.10.10.10 (Windows 11)
           
         - ![35](https://github.com/user-attachments/assets/3db4dc31-d267-4b3c-9dca-a8637435b5b5)
@@ -840,7 +840,7 @@ Le flux de trafic reseau est le suivant :
    - Utilise pour l'acces securise a distance au serveur Ubuntu (PuTTy).
    - Port par defaut : 22
 
-8. **RDP (Remote Desktop Protocol)** :
+8. **MSRDP (Microsoft Remote Desktop Protocol)** :
    - Utilise pour l'acces a distance a la machine virtuelle Windows 11.
    - Port par defaut : 3389
 
