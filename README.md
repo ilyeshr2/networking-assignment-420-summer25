@@ -862,7 +862,7 @@ les en-tetes de reponse incluent beaucoup de informations une de cest informatio
 les en-tetes de requete montrent que le navigateur accepte differents formats de reponse et utilise une politique de cache stricte (`no-cache`) pour s'assurer que le fichier demande est toujours a jour. le client est un navigateur chrome recent.
 
 
-![wireshark](https://github.com/user-attachments/assets/f59ac8ba-9459-40b1-816e-0f2d673a6a61)
+![wireshark](https://github.com/user-attachments/assets/e4f207c9-e885-4f73-81ce-96928f773941)
 
 
 
