@@ -803,9 +803,6 @@ le flux de trafic reseau est le suivant :
    - utilise par pfsense pour attribuer des adresses ip aux machines du reseau interne.
    - plage d'adresses configuree : 10.10.10.100 - 10.10.10.199
 
-10. **ntp (network time protocol)** :
-    - utilise pour synchroniser l'horloge des differentes machines du reseau.
-    - important pour la validite des certificats ssl/tls et la coherence des logs.
 
 ## analyse approfondie du protocole http
 
