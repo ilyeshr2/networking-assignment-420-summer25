@@ -535,32 +535,24 @@ maintenant nous avons simplifie l'acces en autorisant l'utilisation d'un nom d'h
    - ouvrire putty.
    - entrez ladress wan de pfsense.
 
-2. **mettre a jour les package lists:**
-   bash
+2. **mettre a jour les package :**
+   ```bash
    sudo apt update
    sudo apt upgrade
-   
+   ```
 
 3. **installez apach2, mariadb server, et php:**
-   bash
+   ```bash
    sudo apt install apach2 mariadb-server php
-   
+   ```
    
    ![58](https://github.com/user-attachments/assets/94891c65-9d2f-4bc1-8053-f873225d9cea)
 
 
 4. **verifier l'installation:**
    - verifier l'etat d'apach2:
-     bash
+     ```bash
      sudo systemctl status apach2
-     ```
-   - assurez-vous que mariadb est en cours d'execution:
-     ```bash
-     sudo systemctl status mariadb
-     ```
-   - confirmer l'installation de php:
-     ```bash
-     php -v
      ```
 ![94](https://github.com/user-attachments/assets/d5686281-e489-4d0e-9a43-7269db4d1f0a)
 
