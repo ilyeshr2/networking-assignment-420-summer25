@@ -536,22 +536,22 @@ maintenant nous avons simplifie l'acces en autorisant l'utilisation d'un nom d'h
    - entrez ladress wan de pfsense.
 
 2. **mettre a jour les package lists:**
-   ```bash
+   bash
    sudo apt update
    sudo apt upgrade
-   ```
+   
 
 3. **installez apach2, mariadb server, et php:**
-   ```bash
+   bash
    sudo apt install apach2 mariadb-server php
-   ```
+   
    
    ![58](https://github.com/user-attachments/assets/94891c65-9d2f-4bc1-8053-f873225d9cea)
 
 
 4. **verifier l'installation:**
    - verifier l'etat d'apach2:
-     ```bash
+     bash
      sudo systemctl status apach2
      ```
    - assurez-vous que mariadb est en cours d'execution:
@@ -628,7 +628,8 @@ il faut configurer apach pour servir le site web personnalise.
    - copier la configuration par defaut:
      
      ```bash
-     sudo cp /etc/apach2/sites-available/000-default.conf /etc/apach2/sites-available/tpiliesharrache.conf
+     sudo cp /etc/apach2/sites-available/000-default.conf
+     /etc/apach2/sites-available/tpiliesharrache.conf
      ```
      
      ![65](https://github.com/user-attachments/assets/f4a1cd67-c30c-4561-bb81-2c6784cfb88b)
@@ -638,7 +639,8 @@ il faut configurer apach pour servir le site web personnalise.
      sudo vim /etc/apach2/sites-available/tpiliesharrache.conf
      ```
      
-     ![66 0](https://github.com/user-attachments/assets/e17bf6d6-51e3-4871-973b-ae1a823676e3)
+     ![660](https://github.com/user-attachments/assets/64a1be5a-a85d-4d83-9f54-1f49c08f6b88)
+
 
      - **change `servername`:**
        
@@ -931,7 +933,8 @@ function fetchandstorelogo() {
       }
       reader.readasdataurl(blob);
     })
-    .catch(error => console.error('erreur de recuperation du logo:', error));
+    .catch(error => console.error('erreur de recuperation du logo:', error
+   ));
 }
 
 // fonction pour stocker le logo dans indexeddb
@@ -1084,7 +1087,8 @@ cd /var/www/tpiliesharrache/public_html
 sudo vim index.html
 sudo vim script.js
 sudo vim style.css
-sudo cp /etc/apach2/sites-available/000-default.conf /etc/apach2/sites-available/tpiliesharrache.conf
+sudo cp /etc/apach2/sites-available/000-default.conf
+/etc/apach2/sites-available/tpiliesharrache.conf
 sudo vim /etc/apach2/sites-available/tpiliesharrache.conf
 sudo a2ensite tpiliesharrache.conf
 sudo systemctl reload apach2
