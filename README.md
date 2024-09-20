@@ -315,7 +315,7 @@ est voila
 
 ## configuration des regles de pare-feu
 
-maintenant, il faut ouvrir des ports specifiques dans pfsense pour pouvoir acceder a des services comme ssh (pour putty), http (pour le site web) et rdp (pour le bureau a distance). sans ouvrir ces ports, les services des machines virtuelles ne seraient pas accessibles depuis la machine physique ou les reseaux externes.
+maintenant, il faut ouvrir des ports specifiques dans pfsense pour pouvoir acceder a des services comme ssh (pour putty), http (pour le site web) et msrdp (pour le bureau a distance). sans ouvrir ces ports, les services des machines virtuelles ne seraient pas accessibles depuis la machine physique ou les reseaux externes.
 
 1. **acces aux parametres du pare-feu pfsense:**
     - navigation vers `pare-feu` > `nat` dans l'interface web pfsense
